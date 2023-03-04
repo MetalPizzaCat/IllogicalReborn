@@ -41,3 +41,5 @@ text = "Add |"
 [node name="Button2" type="Button" parent="CanvasLayer/ColorRect/VBoxContainer"]
 layout_mode = 2
 text = "Add constant"
+
+[connection signal="pressed" from="CanvasLayer/ColorRect/VBoxContainer/Button" to="MainScene" method="AddLogicNodeAnd"]

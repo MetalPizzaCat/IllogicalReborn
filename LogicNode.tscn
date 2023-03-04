@@ -4,8 +4,11 @@
 [ext_resource type="Script" path="res://Script/LogicNode.cs" id="1_cnm14"]
 [ext_resource type="PackedScene" uid="uid://bs6buorisdaki" path="res://connector.tscn" id="3_f1yob"]
 
-[node name="LogicNode" type="Node2D"]
+[node name="LogicNode" type="Node2D" node_paths=PackedStringArray("InputNodeParent", "OutputConnector")]
 script = ExtResource("1_cnm14")
+ConnectorPrefab = ExtResource("3_f1yob")
+InputNodeParent = NodePath("InputConnectors")
+OutputConnector = NodePath("OutputConnector")
 
 [node name="Button" type="Button" parent="."]
 offset_left = -64.0
@@ -18,12 +21,10 @@ texture = ExtResource("1_0jav4")
 
 [node name="OutputConnector" parent="." instance=ExtResource("3_f1yob")]
 position = Vector2(88, 0)
+IsOutput = true
 
-[node name="Connector2" parent="." instance=ExtResource("3_f1yob")]
+[node name="InputConnectors" type="Node2D" parent="."]
 position = Vector2(-88, -40)
-
-[node name="Connector3" parent="." instance=ExtResource("3_f1yob")]
-position = Vector2(-88, 40)
 
 [connection signal="button_down" from="Button" to="." method="Grab"]
 [connection signal="button_up" from="Button" to="." method="Release"]

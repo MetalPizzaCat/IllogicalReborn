@@ -1,5 +1,9 @@
-[gd_scene format=3 uid="uid://yrcih3d3wl8j"]
+[gd_scene load_steps=2 format=3 uid="uid://yrcih3d3wl8j"]
 
-[node name="ConnectionWire" type="Node2D"]
+[ext_resource type="Script" path="res://Script/ConnectionWire.cs" id="1_f0ii3"]
+
+[node name="ConnectionWire" type="Node2D" node_paths=PackedStringArray("Line")]
+script = ExtResource("1_f0ii3")
+Line = NodePath("Line2D")
 
 [node name="Line2D" type="Line2D" parent="."]
