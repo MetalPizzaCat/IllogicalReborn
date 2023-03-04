@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://lsts0k3d5xbf"]
+
+[ext_resource type="Texture2D" uid="uid://wurfl4d5gx1b" path="res://icon.svg" id="1_0jav4"]
+[ext_resource type="Script" path="res://Script/LogicNode.cs" id="1_cnm14"]
+[ext_resource type="PackedScene" uid="uid://bs6buorisdaki" path="res://connector.tscn" id="3_f1yob"]
+
+[node name="LogicNode" type="Node2D"]
+script = ExtResource("1_cnm14")
+
+[node name="Button" type="Button" parent="."]
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+
+[node name="Body" type="Sprite2D" parent="."]
+texture = ExtResource("1_0jav4")
+
+[node name="OutputConnector" parent="." instance=ExtResource("3_f1yob")]
+position = Vector2(88, 0)
+
+[node name="Connector2" parent="." instance=ExtResource("3_f1yob")]
+position = Vector2(-88, -40)
+
+[node name="Connector3" parent="." instance=ExtResource("3_f1yob")]
+position = Vector2(-88, 40)
+
+[connection signal="button_down" from="Button" to="." method="Grab"]
+[connection signal="button_up" from="Button" to="." method="Release"]

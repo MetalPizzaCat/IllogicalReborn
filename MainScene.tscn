@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://6w3butyni4vy"]
+
+[ext_resource type="Script" path="res://Script/MainScene.cs" id="1_ux4c7"]
+[ext_resource type="PackedScene" uid="uid://lsts0k3d5xbf" path="res://LogicNode.tscn" id="2_ok2p3"]
+
+[node name="MainScene" type="Node2D" node_paths=PackedStringArray("CurrentCamera")]
+script = ExtResource("1_ux4c7")
+CurrentCamera = NodePath("Camera2D")
+metadata/_edit_use_anchors_ = true
+
+[node name="LogicNode" parent="." instance=ExtResource("2_ok2p3")]
+position = Vector2(266, 162)
+
+[node name="LogicNode2" parent="." instance=ExtResource("2_ok2p3")]
+position = Vector2(528, 368)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(576, 328)

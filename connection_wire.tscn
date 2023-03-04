@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://yrcih3d3wl8j"]
+
+[node name="ConnectionWire" type="Node2D"]
+
+[node name="Line2D" type="Line2D" parent="."]
