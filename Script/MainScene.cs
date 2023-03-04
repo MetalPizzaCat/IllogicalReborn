@@ -45,8 +45,7 @@ public partial class MainScene : Node
 		}
 		if (Input.IsActionJustPressed("Cancel"))
 		{
-			_currentlySelectedConnector = null;
-			ConnectionLinePreview.Visible = false;
+			CancelConnection();
 		}
 		if (@event is InputEventMouseMotion motionEvent)
 		{
@@ -58,6 +57,12 @@ public partial class MainScene : Node
 	{
 		base._Ready();
 		ConnectionLinePreview.Points = new Vector2[2];
+		ConnectionLinePreview.Visible = false;
+	}
+
+	private void CancelConnection()
+	{
+		_currentlySelectedConnector = null;
 		ConnectionLinePreview.Visible = false;
 	}
 
@@ -81,8 +86,6 @@ public partial class MainScene : Node
 			_currentlySelectedConnector = connector;
 			ConnectionLinePreview.Visible = true;
 			ConnectionLinePreview.SetPointPosition(0, connector.GlobalPosition);
-			//ConnectionLinePreview.Points[0] = connector.Position;
-
 		}
 		else
 		{
@@ -95,7 +98,9 @@ public partial class MainScene : Node
 			AddChild(wire);
 			wire.Source = connector.IsOutput ? _currentlySelectedConnector : connector;
 			wire.Destination = !connector.IsOutput ? _currentlySelectedConnector : connector;
-			_currentlySelectedConnector = null;
+			_currentlySelectedConnector.Connect(connector);
+			connector.Connect(_currentlySelectedConnector);
+			CancelConnection();
 		}
 
 	}

@@ -47,4 +47,14 @@ public partial class ConnectionWire : Node2D
 			Line.Points = new Vector2[2];
 		}
 	}
+
+	public override void _Process(double delta)
+	{
+		base._Process(delta);
+		if (Destination != null && Source != null)
+		{
+			Line.SetPointPosition(0, _source.GlobalPosition);
+			Line.SetPointPosition(1, _destination.GlobalPosition);
+		}
+	}
 }
