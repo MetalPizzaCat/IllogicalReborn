@@ -194,4 +194,15 @@ public partial class MainScene : Node
     {
         AddLogicNode<OperationNode>(OperationNotNodePrefab);
     }
+
+    private void AddLogicNodeOr()
+    {
+        AddLogicNode<OperationNode>(OperationNodePrefab).Operation = OperationNode.OperationType.Or;
+    }
+
+
+    private void AddLogicNodeXor()
+    {
+        AddLogicNode<OperationNode>(OperationNodePrefab).Operation = OperationNode.OperationType.Xor;
+    }
 }

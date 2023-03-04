@@ -41,6 +41,10 @@ text = "And"
 layout_mode = 2
 text = "Or"
 
+[node name="AddXor" type="Button" parent="CanvasLayer/ColorRect/VBoxContainer"]
+layout_mode = 2
+text = "Xor"
+
 [node name="AddNot" type="Button" parent="CanvasLayer/ColorRect/VBoxContainer"]
 layout_mode = 2
 text = "Not"
@@ -84,10 +88,13 @@ item_3/id = 2
 [node name="AboutMenu" type="PopupMenu" parent="CanvasLayer/MenuBar"]
 
 [node name="SaveFileDialog" type="FileDialog" parent="."]
+size = Vector2i(632, 500)
 access = 2
 filters = PackedStringArray("*.boo")
 
 [connection signal="pressed" from="CanvasLayer/ColorRect/VBoxContainer/AddAnd" to="MainScene" method="AddLogicNodeAnd"]
+[connection signal="pressed" from="CanvasLayer/ColorRect/VBoxContainer/AddOr" to="MainScene" method="AddLogicNodeOr"]
+[connection signal="pressed" from="CanvasLayer/ColorRect/VBoxContainer/AddXor" to="MainScene" method="AddLogicNodeXor"]
 [connection signal="pressed" from="CanvasLayer/ColorRect/VBoxContainer/AddNot" to="MainScene" method="AddLogicNodeNot"]
 [connection signal="pressed" from="CanvasLayer/ColorRect/VBoxContainer/AddDisplay" to="MainScene" method="AddDisplayNode"]
 [connection signal="index_pressed" from="CanvasLayer/MenuBar/FileMenu" to="CanvasLayer/MenuBar" method="FileMenuPressed"]
