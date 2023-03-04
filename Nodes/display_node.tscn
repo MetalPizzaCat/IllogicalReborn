@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://rh4fjvlhlta8"]
+
+[ext_resource type="PackedScene" uid="uid://cxn1fucweqvo2" path="res://Nodes/LogicNode.tscn" id="1_08qnk"]
+[ext_resource type="Script" path="res://Script/Nodes/DisplayNode.cs" id="2_gfsbd"]
+
+[node name="DisplayNode" node_paths=PackedStringArray("DisplayLabel") instance=ExtResource("1_08qnk")]
+script = ExtResource("2_gfsbd")
+DisplayLabel = NodePath("Label")
+InputSize = 1
+
+[node name="ColorRect" type="ColorRect" parent="." index="4"]
+offset_left = -56.0
+offset_top = -56.0
+offset_right = 56.0
+offset_bottom = 56.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.803922)
+
+[node name="Label" type="Label" parent="." index="5"]
+offset_left = -56.0
+offset_top = -56.0
+offset_right = 56.0
+offset_bottom = 56.0
+text = "BLESSED SIGMAR THE WORLD DROWNS IN CORRUPTION"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2

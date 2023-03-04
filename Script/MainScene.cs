@@ -11,8 +11,6 @@ public partial class MainScene : Node
 	[Export]
 	public Line2D? ConnectionLinePreview { get; set; } = null;
 
-	[Export]
-	public PackedScene? LogicNodePrefab { get; set; } = null;
 
 	[Export]
 	public PackedScene? ConnectorPrefab { get; set; } = null;
@@ -22,6 +20,17 @@ public partial class MainScene : Node
 
 	[Export]
 	public Node2D? NodeSpawnLocation { get; set; }
+
+	[ExportCategory("Nodes")]
+	[Export]
+	public PackedScene? OperationNodePrefab { get; set; } = null;
+
+	[Export]
+	public PackedScene? OperationNotNodePrefab { get; set; } = null;
+
+	[Export]
+	public PackedScene? DisplayNodePrefab { get; set; } = null;
+
 
 	public List<LogicNode> LogicComponents { get; set; } = new List<LogicNode>();
 
@@ -66,19 +75,6 @@ public partial class MainScene : Node
 		ConnectionLinePreview.Visible = false;
 	}
 
-	private void AddLogicNodeAnd()
-	{
-		if (LogicNodePrefab == null)
-		{
-			return;
-		}
-		LogicNode node = LogicNodePrefab.Instantiate<LogicNode>();
-		AddChild(node);
-		LogicComponents.Add(node);
-		node.OnConnectorSelected += SelectConnector;
-		node.Position = NodeSpawnLocation?.Position ?? new Vector2(50, 50);
-	}
-
 	private void SelectConnector(Connector connector)
 	{
 		if (_currentlySelectedConnector == null)
@@ -103,5 +99,34 @@ public partial class MainScene : Node
 			CancelConnection();
 		}
 
+	}
+
+	private T? AddLogicNode<T>(PackedScene? prefab) where T : LogicNode
+	{
+		if (prefab == null)
+		{
+			return null;
+		}
+		T node = prefab.Instantiate<T>();
+		AddChild(node);
+		LogicComponents.Add(node);
+		node.OnConnectorSelected += SelectConnector;
+		node.Position = NodeSpawnLocation?.Position ?? new Vector2(50, 50);
+		return node;
+	}
+
+	private void AddLogicNodeAnd()
+	{
+		AddLogicNode<OperationNode>(OperationNodePrefab);
+	}
+
+	private void AddDisplayNode()
+	{
+		AddLogicNode<DisplayNode>(DisplayNodePrefab);
+	}
+
+	private void AddLogicNodeNot()
+	{
+		AddLogicNode<OperationNode>(OperationNotNodePrefab);
 	}
 }

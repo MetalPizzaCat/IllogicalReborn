@@ -30,16 +30,26 @@ anchor_right = 1.0
 anchor_bottom = 0.79
 offset_bottom = 0.0799866
 
-[node name="Button" type="Button" parent="CanvasLayer/ColorRect/VBoxContainer"]
+[node name="AddAnd" type="Button" parent="CanvasLayer/ColorRect/VBoxContainer"]
 layout_mode = 2
-text = "Add &"
+text = "And"
 
-[node name="Button3" type="Button" parent="CanvasLayer/ColorRect/VBoxContainer"]
+[node name="AddOr" type="Button" parent="CanvasLayer/ColorRect/VBoxContainer"]
 layout_mode = 2
-text = "Add |"
+text = "Or"
 
-[node name="Button2" type="Button" parent="CanvasLayer/ColorRect/VBoxContainer"]
+[node name="AddNot" type="Button" parent="CanvasLayer/ColorRect/VBoxContainer"]
 layout_mode = 2
-text = "Add constant"
+text = "Not"
 
-[connection signal="pressed" from="CanvasLayer/ColorRect/VBoxContainer/Button" to="MainScene" method="AddLogicNodeAnd"]
+[node name="AddConst" type="Button" parent="CanvasLayer/ColorRect/VBoxContainer"]
+layout_mode = 2
+text = "Constant"
+
+[node name="AddDisplay" type="Button" parent="CanvasLayer/ColorRect/VBoxContainer"]
+layout_mode = 2
+text = "Display"
+
+[connection signal="pressed" from="CanvasLayer/ColorRect/VBoxContainer/AddAnd" to="MainScene" method="AddLogicNodeAnd"]
+[connection signal="pressed" from="CanvasLayer/ColorRect/VBoxContainer/AddNot" to="MainScene" method="AddLogicNodeNot"]
+[connection signal="pressed" from="CanvasLayer/ColorRect/VBoxContainer/AddDisplay" to="MainScene" method="AddDisplayNode"]

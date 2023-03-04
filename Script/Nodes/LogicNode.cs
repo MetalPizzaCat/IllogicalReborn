@@ -1,5 +1,7 @@
 using Godot;
 using System;
+using System.Collections.Generic;
+
 
 public partial class LogicNode : Node2D
 {
@@ -28,6 +30,8 @@ public partial class LogicNode : Node2D
 	[Export]
 	public Connector OutputConnector { get; set; } = null;
 
+	public List<Connector> Inputs { get; set; } = new List<Connector>();
+
 	public override void _Ready()
 	{
 		OutputConnector.OnSelected += (Connector connector) => OnConnectorSelected?.Invoke(connector);
@@ -40,6 +44,7 @@ public partial class LogicNode : Node2D
 		{
 			Connector con = ConnectorPrefab.Instantiate<Connector>();
 			InputNodeParent.AddChild(con);
+			Inputs.Add(con);
 			con.Position = new Vector2(0, i * 48);
 			con.OnSelected += (Connector connector) => OnConnectorSelected?.Invoke(connector);
 			con.ParentNode = this;

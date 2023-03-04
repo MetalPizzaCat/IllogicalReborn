@@ -2,6 +2,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public partial class Connector : Node2D
 {
@@ -13,6 +14,18 @@ public partial class Connector : Node2D
 	public bool IsOutput { get; set; } = false;
 
 	private List<Connector> _connections = new List<Connector>();
+
+	/// <summary>
+	/// All connectors that this connector is connected to.
+	/// </summary>
+	public List<Connector> Connections => _connections;
+
+	/// <summary>
+	/// Get connector that is currently connected.<para/>
+	/// Meant for Input type as Output can have multiple connections, so Connections list should be used instead.
+	/// </summary>
+	/// <value></value>
+	public Connector? Connection => _connections.FirstOrDefault();
 
 	public bool CanFitMoreConnections => IsOutput || _connections.Count == 0 || _connections[0] == null;
 	public LogicNode? ParentNode { get; set; } = null;

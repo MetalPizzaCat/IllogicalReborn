@@ -1,12 +1,12 @@
-[gd_scene load_steps=4 format=3 uid="uid://lsts0k3d5xbf"]
+[gd_scene load_steps=4 format=3 uid="uid://cxn1fucweqvo2"]
 
-[ext_resource type="Texture2D" uid="uid://wurfl4d5gx1b" path="res://icon.svg" id="1_0jav4"]
-[ext_resource type="Script" path="res://Script/LogicNode.cs" id="1_cnm14"]
-[ext_resource type="PackedScene" uid="uid://bs6buorisdaki" path="res://connector.tscn" id="3_f1yob"]
+[ext_resource type="Script" path="res://Script/Nodes/LogicNode.cs" id="1_e2fq6"]
+[ext_resource type="PackedScene" uid="uid://bs6buorisdaki" path="res://connector.tscn" id="2_smbb3"]
+[ext_resource type="Texture2D" uid="uid://wurfl4d5gx1b" path="res://icon.svg" id="3_etb5j"]
 
 [node name="LogicNode" type="Node2D" node_paths=PackedStringArray("InputNodeParent", "OutputConnector")]
-script = ExtResource("1_cnm14")
-ConnectorPrefab = ExtResource("3_f1yob")
+script = ExtResource("1_e2fq6")
+ConnectorPrefab = ExtResource("2_smbb3")
 InputNodeParent = NodePath("InputConnectors")
 OutputConnector = NodePath("OutputConnector")
 
@@ -17,9 +17,9 @@ offset_right = 64.0
 offset_bottom = 64.0
 
 [node name="Body" type="Sprite2D" parent="."]
-texture = ExtResource("1_0jav4")
+texture = ExtResource("3_etb5j")
 
-[node name="OutputConnector" parent="." instance=ExtResource("3_f1yob")]
+[node name="OutputConnector" parent="." instance=ExtResource("2_smbb3")]
 position = Vector2(88, 0)
 IsOutput = true
 
