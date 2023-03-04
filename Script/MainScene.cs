@@ -2,6 +2,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public partial class MainScene : Node
 {
@@ -35,6 +36,8 @@ public partial class MainScene : Node
 	public List<LogicNode> LogicComponents { get; set; } = new List<LogicNode>();
 
 	public List<Connector> Connectors { get; set; } = new List<Connector>();
+
+	public List<ConnectionWire> Wires { get; set; } = new List<ConnectionWire>();
 
 	private Connector? _currentlySelectedConnector = null;
 
@@ -79,6 +82,37 @@ public partial class MainScene : Node
 	{
 		if (_currentlySelectedConnector == null)
 		{
+			/*
+			if has connections:
+				if is input:
+					delete connection
+					grab destination as source
+				else:
+					ignore
+			if not:
+				grab source
+			*/
+			if (!connector.IsOutput && connector.Connection != null)
+			{
+				GD.Print("Already has connection");
+				ConnectionWire? wire = Wires.FirstOrDefault(p => p.Source == connector.Connection && p.Destination == connector);
+				GD.Print(wire == null ? "and found wire" : "but didn't find wire");
+				if (wire != null)
+				{
+					wire.QueueFree();
+					Wires.Remove(wire);
+
+					_currentlySelectedConnector = connector.Connection;
+					ConnectionLinePreview.Visible = true;
+					ConnectionLinePreview.SetPointPosition(0, connector.Connection.GlobalPosition);
+					//disconnect other node from this
+					connector.Connection.DisconnectFrom(connector);
+					// disconect this node from other
+					connector.DisconnectFrom( connector.Connection);
+					//this is getting confusing 
+					return;
+				}
+			}
 			_currentlySelectedConnector = connector;
 			ConnectionLinePreview.Visible = true;
 			ConnectionLinePreview.SetPointPosition(0, connector.GlobalPosition);
@@ -92,10 +126,12 @@ public partial class MainScene : Node
 			}
 			ConnectionWire wire = ConnectorPrefab.Instantiate<ConnectionWire>();
 			AddChild(wire);
-			wire.Source = connector.IsOutput ? _currentlySelectedConnector : connector;
-			wire.Destination = !connector.IsOutput ? _currentlySelectedConnector : connector;
-			_currentlySelectedConnector.Connect(connector);
-			connector.Connect(_currentlySelectedConnector);
+			Wires.Add(wire);
+			//ensure that source is always the input and destination is always output
+			wire.Source = !connector.IsOutput ? _currentlySelectedConnector : connector;
+			wire.Destination = connector.IsOutput ? _currentlySelectedConnector : connector;
+			_currentlySelectedConnector.ConnectTo(connector);
+			connector.ConnectTo(_currentlySelectedConnector);
 			CancelConnection();
 		}
 
