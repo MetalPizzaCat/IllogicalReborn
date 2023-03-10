@@ -6,10 +6,11 @@
 [ext_resource type="PackedScene" uid="uid://yrcih3d3wl8j" path="res://connection_wire.tscn" id="3_hrhhu"]
 [ext_resource type="PackedScene" uid="uid://bqs076b4kpaja" path="res://Nodes/not_scene.tscn" id="4_j8qlf"]
 
-[node name="MainScene" type="Node2D" node_paths=PackedStringArray("CurrentCamera", "ConnectionLinePreview", "NodeSpawnLocation")]
+[node name="MainScene" type="Node2D" node_paths=PackedStringArray("CurrentCamera", "ConnectionLinePreview", "DebugInfoLabel", "NodeSpawnLocation")]
 script = ExtResource("1_ux4c7")
 CurrentCamera = NodePath("Camera2D")
 ConnectionLinePreview = NodePath("ConnectionLinePreview")
+DebugInfoLabel = NodePath("Camera2D/DEBUG_OffsetLabel")
 ConnectorPrefab = ExtResource("3_hrhhu")
 NodeSpawnLocation = NodePath("NodeSpawnLocation")
 OperationNodePrefab = ExtResource("2_h1e4u")
@@ -19,6 +20,12 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(576, 328)
+
+[node name="DEBUG_OffsetLabel" type="Label" parent="Camera2D"]
+offset_left = -16.0
+offset_top = -56.0
+offset_right = 280.0
+offset_bottom = -8.0
 
 [node name="NodeSpawnLocation" type="Node2D" parent="."]
 position = Vector2(576, 320)

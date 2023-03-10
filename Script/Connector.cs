@@ -7,8 +7,10 @@ using System.Linq;
 public partial class Connector : Node2D
 {
     public delegate void SelectedEventHandler(Connector connector);
+    public delegate void ConnectionRemovedEventHandler(Connector self, Connector other);
 
     public event SelectedEventHandler? OnSelected;
+    public event ConnectionRemovedEventHandler? OnConnectionRemoved;
 
     [Export]
     public bool IsOutput { get; set; } = false;
@@ -35,11 +37,11 @@ public partial class Connector : Node2D
         OnSelected?.Invoke(this);
     }
 
-	/// <summary>
-	/// Add connection to other connector, if output new connection will be added<para/>
-	/// If input connection at _connections[0] (aka Connection property) will be overridden
-	/// </summary>
-	/// <param name="other"></param>
+    /// <summary>
+    /// Add connection to other connector, if output new connection will be added<para/>
+    /// If input connection at _connections[0] (aka Connection property) will be overridden
+    /// </summary>
+    /// <param name="other"></param>
     public void ConnectTo(Connector other)
     {
         //Output can have as many connections as needed
@@ -73,12 +75,13 @@ public partial class Connector : Node2D
 
     }
 
-	/// <summary>
-	/// Remove connection to other node
-	/// </summary>
-	/// <param name="connector"></param>
+    /// <summary>
+    /// Remove connection to other node
+    /// </summary>
+    /// <param name="connector"></param>
     public void DisconnectFrom(Connector connector)
     {
         _connections.Remove(connector);
+        OnConnectionRemoved?.Invoke(this, connector);
     }
 }
