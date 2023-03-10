@@ -4,11 +4,12 @@
 [ext_resource type="PackedScene" uid="uid://bs6buorisdaki" path="res://connector.tscn" id="2_smbb3"]
 [ext_resource type="Texture2D" uid="uid://wurfl4d5gx1b" path="res://icon.svg" id="3_etb5j"]
 
-[node name="LogicNode" type="Node2D" node_paths=PackedStringArray("InputNodeParent", "ContextMenu", "OutputConnector")]
+[node name="LogicNode" type="Node2D" node_paths=PackedStringArray("InputNodeParent", "ContextMenu", "DebugInfoLabel", "OutputConnector")]
 script = ExtResource("1_e2fq6")
 ConnectorPrefab = ExtResource("2_smbb3")
 InputNodeParent = NodePath("InputConnectors")
 ContextMenu = NodePath("PopupMenu")
+DebugInfoLabel = NodePath("DEBUG_InfoLabel")
 OutputConnector = NodePath("OutputConnector")
 
 [node name="PopupMenu" type="PopupMenu" parent="."]
@@ -41,6 +42,12 @@ IsOutput = true
 
 [node name="InputConnectors" type="Node2D" parent="."]
 position = Vector2(-88, -40)
+
+[node name="DEBUG_InfoLabel" type="Label" parent="."]
+offset_left = -64.0
+offset_top = -96.0
+offset_right = 56.0
+offset_bottom = -64.0
 
 [connection signal="index_pressed" from="PopupMenu" to="." method="OnContextMenuPressed"]
 [connection signal="button_down" from="Button" to="." method="Grab"]

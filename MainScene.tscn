@@ -1,13 +1,16 @@
-[gd_scene load_steps=6 format=3 uid="uid://6w3butyni4vy"]
+[gd_scene load_steps=8 format=3 uid="uid://6w3butyni4vy"]
 
 [ext_resource type="Script" path="res://Script/MainScene.cs" id="1_ux4c7"]
 [ext_resource type="PackedScene" uid="uid://eycgxhrmcqlg" path="res://Nodes/operation_node.tscn" id="2_h1e4u"]
 [ext_resource type="PackedScene" uid="uid://rh4fjvlhlta8" path="res://Nodes/display_node.tscn" id="3_5fjf0"]
 [ext_resource type="PackedScene" uid="uid://yrcih3d3wl8j" path="res://connection_wire.tscn" id="3_hrhhu"]
 [ext_resource type="PackedScene" uid="uid://bqs076b4kpaja" path="res://Nodes/not_scene.tscn" id="4_j8qlf"]
+[ext_resource type="Texture2D" uid="uid://wurfl4d5gx1b" path="res://icon.svg" id="6_p2ilx"]
+[ext_resource type="Script" path="res://Script/CanvasControl.cs" id="7_hi55h"]
 
-[node name="MainScene" type="Node2D" node_paths=PackedStringArray("CurrentCamera", "ConnectionLinePreview", "DebugInfoLabel", "NodeSpawnLocation")]
+[node name="MainScene" type="Node2D" node_paths=PackedStringArray("CanvasControl", "CurrentCamera", "ConnectionLinePreview", "DebugInfoLabel", "NodeSpawnLocation")]
 script = ExtResource("1_ux4c7")
+CanvasControl = NodePath("Camera2D/CanvasControl")
 CurrentCamera = NodePath("Camera2D")
 ConnectionLinePreview = NodePath("ConnectionLinePreview")
 DebugInfoLabel = NodePath("Camera2D/DEBUG_OffsetLabel")
@@ -16,10 +19,8 @@ NodeSpawnLocation = NodePath("NodeSpawnLocation")
 OperationNodePrefab = ExtResource("2_h1e4u")
 OperationNotNodePrefab = ExtResource("4_j8qlf")
 DisplayNodePrefab = ExtResource("3_5fjf0")
-metadata/_edit_use_anchors_ = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(576, 328)
 
 [node name="DEBUG_OffsetLabel" type="Label" parent="Camera2D"]
 offset_left = -16.0
@@ -27,7 +28,25 @@ offset_top = -56.0
 offset_right = 280.0
 offset_bottom = -8.0
 
+[node name="Offsethelper2" type="Sprite2D" parent="Camera2D"]
+modulate = Color(0.105882, 1, 0.25098, 1)
+position = Vector2(0, 248)
+texture = ExtResource("6_p2ilx")
+
+[node name="CanvasControl" type="Control" parent="Camera2D"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -568.0
+offset_top = -320.0
+offset_right = 576.0
+offset_bottom = 320.0
+script = ExtResource("7_hi55h")
+
 [node name="NodeSpawnLocation" type="Node2D" parent="."]
-position = Vector2(576, 320)
 
 [node name="ConnectionLinePreview" type="Line2D" parent="."]
+
+[node name="Offsethelper" type="Sprite2D" parent="."]
+modulate = Color(0.552941, 0.494118, 1, 1)
+position = Vector2(0, 248)
+texture = ExtResource("6_p2ilx")
