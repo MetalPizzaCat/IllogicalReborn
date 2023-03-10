@@ -115,7 +115,7 @@ public partial class LogicNode : Node2D
 				case MouseButton.Right:
 					//ContextMenu?.Show();
 					ContextMenu.Popup();
-					ContextMenu.Position = new Vector2I((int)GlobalPosition.X, (int)GlobalPosition.Y);
+					ContextMenu.Position = new Vector2I((int)mousePress.GlobalPosition.X, ((int)mousePress.GlobalPosition.Y));
 					break;
 			}
 		}
