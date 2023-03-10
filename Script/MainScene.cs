@@ -112,7 +112,7 @@ public partial class MainScene : Node
         }
         if (@event is InputEventMouseMotion motionEvent)
         {
-            ConnectionLinePreview?.SetPointPosition(1, motionEvent.GlobalPosition);
+            ConnectionLinePreview?.SetPointPosition(1, MousePosition + CameraOffset);
             if (Input.IsActionPressed("move_canvas"))
             {
                 CurrentCamera.Position -= motionEvent.Relative;
