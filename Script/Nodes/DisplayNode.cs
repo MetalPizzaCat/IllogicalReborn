@@ -4,22 +4,23 @@ using System.Linq;
 
 public partial class DisplayNode : LogicNode
 {
-	[Export]
-	public Label DisplayLabel { get; set; }
+    [Export]
+    public Label DisplayLabel { get; set; }
 
-	public override void _Process(double delta)
-	{
-		base._Process(delta);
-		DisplayLabel.Text = Execute().ToString();
-	}
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+        UInt32 data = Execute();
+        DisplayLabel.Text = data.ToString();//(DataSize == 1 ? (data == 1).ToString() : data.ToString());
+    }
 
-	public override void _Ready()
-	{
-		base._Ready();
-	}
+    public override void _Ready()
+    {
+        base._Ready();
+    }
 
-	public override bool Execute()
-	{
-		return Inputs.FirstOrDefault()?.Connection?.ParentNode.Execute() ?? false;
-	}
+    public override UInt32 Execute()
+    {
+        return Inputs.FirstOrDefault()?.Connection?.ParentNode.Execute() ?? 0;
+    }
 }

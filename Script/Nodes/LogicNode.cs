@@ -36,6 +36,24 @@ public partial class LogicNode : Node2D
 	[Export]
 	public int InputSize { get; set; } = 2;
 
+	private int _dataSize = 1;
+	public UInt32 DataMask { get; set; } = 1;
+
+	[Export(PropertyHint.Range, "min = 1, max = 32")]
+	public int DataSize
+	{
+		get => _dataSize;
+		set
+		{
+			_dataSize = value;
+			DataMask = 0;
+			for (int i = 0; i < value; i++)
+			{
+				DataMask |= (1u << i);
+			}
+		}
+	}
+
 	public bool IsGrabbed { get; set; } = false;
 
 	[Export]
@@ -89,9 +107,9 @@ public partial class LogicNode : Node2D
 		}
 	}
 
-	public virtual bool Execute()
+	public virtual UInt32 Execute()
 	{
-		return false;
+		return 0;
 	}
 
 	private void Grab()
