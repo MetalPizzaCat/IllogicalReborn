@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://dcq8kej6a3fjm"]
+[gd_scene load_steps=4 format=3 uid="uid://dcq8kej6a3fjm"]
 
 [ext_resource type="PackedScene" uid="uid://6w3butyni4vy" path="res://MainScene.tscn" id="1_62umj"]
 [ext_resource type="Script" path="res://Script/WindowMenu.cs" id="2_36w7i"]
+[ext_resource type="PackedScene" uid="uid://c6ygkydyym4ul" path="res://Nodes/const_node.tscn" id="2_ik7h8"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -13,6 +14,7 @@ grow_vertical = 2
 metadata/_edit_horizontal_guides_ = []
 
 [node name="MainScene" parent="." instance=ExtResource("1_62umj")]
+ConstNodePrefab = ExtResource("2_ik7h8")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = 2
@@ -96,6 +98,7 @@ filters = PackedStringArray("*.boo")
 [connection signal="pressed" from="CanvasLayer/ColorRect/VBoxContainer/AddOr" to="MainScene" method="AddLogicNodeOr"]
 [connection signal="pressed" from="CanvasLayer/ColorRect/VBoxContainer/AddXor" to="MainScene" method="AddLogicNodeXor"]
 [connection signal="pressed" from="CanvasLayer/ColorRect/VBoxContainer/AddNot" to="MainScene" method="AddLogicNodeNot"]
+[connection signal="pressed" from="CanvasLayer/ColorRect/VBoxContainer/AddConst" to="MainScene" method="AddLogicNodeConst"]
 [connection signal="pressed" from="CanvasLayer/ColorRect/VBoxContainer/AddDisplay" to="MainScene" method="AddDisplayNode"]
 [connection signal="index_pressed" from="CanvasLayer/MenuBar/FileMenu" to="CanvasLayer/MenuBar" method="FileMenuPressed"]
 [connection signal="file_selected" from="SaveFileDialog" to="CanvasLayer/MenuBar" method="FileToSaveSelected"]

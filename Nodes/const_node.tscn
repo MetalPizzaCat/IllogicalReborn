@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://c6ygkydyym4ul"]
+
+[ext_resource type="PackedScene" uid="uid://cxn1fucweqvo2" path="res://Nodes/LogicNode.tscn" id="1_tdj17"]
+[ext_resource type="Script" path="res://Script/Nodes/ConstNode.cs" id="2_av23p"]
+
+[node name="ConstNode" instance=ExtResource("1_tdj17")]
+script = ExtResource("2_av23p")
+ConnectorPrefab = null
+InputSize = 0

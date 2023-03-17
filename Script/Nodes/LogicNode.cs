@@ -10,6 +10,8 @@ public partial class LogicNode : Node2D
 	public delegate void NodeDeselectedEventHandler(LogicNode node);
 	public delegate void DeleteNodeEventHandler(LogicNode node);
 
+	public delegate void IncompatibleSizesDetectedEventHandler(Connector self, Connector other);
+
 	// Events can be nullable because they are assigned from code
 #nullable enable
 	public event ConnectorSelectedEventHandler? OnConnectorSelected;
@@ -17,6 +19,9 @@ public partial class LogicNode : Node2D
 
 	public event NodeDeselectedEventHandler? OnNodeDeselected;
 	public event DeleteNodeEventHandler? OnNodeDeleted;
+
+	public event IncompatibleSizesDetectedEventHandler? OnIncompatibleSizesDetected;
+
 
 	[Export]
 	public PackedScene? ConnectorPrefab { get; set; } = null;
@@ -39,7 +44,7 @@ public partial class LogicNode : Node2D
 	private int _dataSize = 1;
 	public UInt32 DataMask { get; set; } = 1;
 
-	[Export(PropertyHint.Range, "min = 1, max = 32")]
+	[Export]
 	public int DataSize
 	{
 		get => _dataSize;
@@ -51,6 +56,7 @@ public partial class LogicNode : Node2D
 			{
 				DataMask |= (1u << i);
 			}
+			NotifyConnectorsAboutSizeChange();
 		}
 	}
 
@@ -66,6 +72,7 @@ public partial class LogicNode : Node2D
 	public override void _Ready()
 	{
 		OutputConnector.OnSelected += (Connector connector) => OnConnectorSelected?.Invoke(connector);
+		OutputConnector.OnIncompatibleSizesDetected += (Connector source, Connector destination) => OnIncompatibleSizesDetected?.Invoke(source, destination);
 		OutputConnector.ParentNode = this;
 		if (ConnectorPrefab == null || InputNodeParent == null)
 		{
@@ -78,20 +85,27 @@ public partial class LogicNode : Node2D
 			Inputs.Add(con);
 			con.Position = new Vector2(0, i * 48);
 			con.OnSelected += (Connector connector) => OnConnectorSelected?.Invoke(connector);
+			con.OnIncompatibleSizesDetected += (Connector source, Connector destination) => OnIncompatibleSizesDetected?.Invoke(source, destination);
 			con.ParentNode = this;
 		}
 	}
 
-	//TODO: move out of this class and into the canvas to make it easier to scale with camera
-	public override void _Input(InputEvent @event)
+	/// <summary>
+	/// Makes every connector object that is child to this node check if data sizes are valid and raise events accordingly
+	/// </summary>
+	public void NotifyConnectorsAboutSizeChange()
 	{
-		base._Input(@event);
-		// if (@event is InputEventMouseMotion motionEvent && IsGrabbed)
-		// {
-		// 	GlobalPosition = motionEvent.GlobalPosition.Snapped(new Vector2(GridSize, GridSize));
-		// }
+		foreach (Connector connector in Inputs)
+		{
+			connector.NotifyConnectedNodesAboutSizeChange();
+		}
+		OutputConnector.NotifyConnectedNodesAboutSizeChange();
 	}
 
+	/// <summary>
+	/// Set new location for the node while respecting grid size preferences
+	/// </summary>
+	/// <param name="location"></param>
 	public void MoveTo(Vector2 location)
 	{
 		Position = location.Snapped(new Vector2(GridSize, GridSize));
@@ -107,9 +121,9 @@ public partial class LogicNode : Node2D
 		}
 	}
 
-	public virtual UInt32 Execute()
+	public virtual UInt32? Execute()
 	{
-		return 0;
+		return null;
 	}
 
 	private void Grab()

@@ -8,12 +8,20 @@ public partial class Connector : Node2D
 {
     public delegate void SelectedEventHandler(Connector connector);
     public delegate void ConnectionRemovedEventHandler(Connector self, Connector other);
+    public delegate void IncompatibleSizesDetectedEventHandler(Connector self, Connector other);
 
     public event SelectedEventHandler? OnSelected;
     public event ConnectionRemovedEventHandler? OnConnectionRemoved;
+    public event IncompatibleSizesDetectedEventHandler? OnIncompatibleSizesDetected;
 
     [Export]
     public bool IsOutput { get; set; } = false;
+
+    /// <summary>
+    /// Which data size does this connector use. Taken from parent node<para/>
+    /// If parent node is null then 0 will be returned
+    /// </summary>
+    public int DataSize => ParentNode?.DataSize ?? 0;
 
     private List<Connector> _connections = new List<Connector>();
 
@@ -63,6 +71,11 @@ public partial class Connector : Node2D
                 _connections[0] = other;
             }
         }
+        if (other.DataSize != DataSize)
+        {
+            // Notify whoever is listening that computation can not proceed
+            OnIncompatibleSizesDetected?.Invoke(this, other);
+        }
     }
 
     public bool CanConnect(Connector connector)
@@ -83,5 +96,17 @@ public partial class Connector : Node2D
     {
         _connections.Remove(connector);
         OnConnectionRemoved?.Invoke(this, connector);
+    }
+
+    public void NotifyConnectedNodesAboutSizeChange()
+    {
+        foreach (Connector other in Connections)
+        {
+            if (other.DataSize != DataSize)
+            {
+                // Notify whoever is listening that computation can not proceed
+                OnIncompatibleSizesDetected?.Invoke(this, other);
+            }
+        }
     }
 }
