@@ -7,6 +7,12 @@ public partial class ConnectionWire : Node2D
 	[Export]
 	public Line2D? Line { get; set; }
 
+	[Export]
+	public Color ValidConnectionColor { get; set; } = Godot.Colors.White;
+
+	[Export]
+	public Color InvalidConnectionColor { get; set; } = Godot.Colors.Red;
+
 	private Connector? _source;
 
 	private Connector? _destination;
@@ -36,6 +42,21 @@ public partial class ConnectionWire : Node2D
 				return;
 			}
 			Line.SetPointPosition(1, _destination.GlobalPosition);
+		}
+	}
+
+	private bool _isDisplayingValidConnection = true;
+
+	public bool IsDisplayingValidConnection
+	{
+		get => _isDisplayingValidConnection;
+		set
+		{
+			_isDisplayingValidConnection = value;
+			if (Line != null)
+			{
+				Line.DefaultColor = value ? ValidConnectionColor : InvalidConnectionColor;
+			}
 		}
 	}
 
