@@ -94,14 +94,40 @@ public partial class Connector : Node2D
 		NotifyConnectedNodesAboutSizeChange();
 	}
 
+	/// <summary>
+	/// Attempt to traverse the node tree to check if given connector is present there
+	/// </summary>
+	/// <param name="source">Connector that is being connected from</param>
+	/// <returns></returns>
+	private bool CanCreateCyclicConnection(Connector source)
+	{
+		foreach (Connector conn in ParentNode.OutputConnector.Connections)
+		{
+			if (conn.ParentNode != null)
+			{
+				if (source.ParentNode == conn.ParentNode || conn.ParentNode.OutputConnector.CanCreateCyclicConnection(source))
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	public bool CanConnect(Connector connector)
 	{
-		return connector != this &&                                     // Can not connect to itself
-				connector.IsOutput != IsOutput &&                       // Can not connect to same type of connector
-				  ParentNode != null &&                                 // Must have a parent
-				  connector.ParentNode != ParentNode &&                 // Can't connect to another connector on the same node
-				CanFitMoreConnections;
-
+		if (connector == this  // Can not connect to itself
+				|| connector.IsOutput == IsOutput // Can not connect to same type of connector
+				|| ParentNode == null // Must have a parent
+				|| connector.ParentNode == ParentNode   // Can't connect to another connector on the same node
+				|| !CanFitMoreConnections)
+		{
+			return false;
+		}
+		// if connecting node is of output type we need to traverse the tree to check 
+		// if we are connecting output to an input up the tree which would create cyclic connection
+		// but if it's an input there is no need to check
+		return connector.IsOutput ? !CanCreateCyclicConnection(connector) : true;
 	}
 
 	/// <summary>
