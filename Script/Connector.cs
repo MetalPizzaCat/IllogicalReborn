@@ -114,6 +114,15 @@ public partial class Connector : Node2D
 		OnConnectionRemoved?.Invoke(this, connector);
 	}
 
+	public void ClearConnections()
+	{
+		foreach (Connector conn in _connections)
+		{
+			OnConnectionRemoved?.Invoke(this, conn);
+		}
+		_connections.Clear();
+	}
+
 	public void NotifyConnectedNodesAboutSizeChange()
 	{
 		HasIncompatibleConnection = true;

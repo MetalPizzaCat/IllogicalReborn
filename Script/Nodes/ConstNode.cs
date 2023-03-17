@@ -7,6 +7,22 @@ using System.Linq;
 /// </summary>
 public partial class ConstNode : LogicNode
 {
+	private UInt32 _value = 0;
+
+	[Export]
+	public UInt32 Value
+	{
+		get => _value;
+		set
+		{
+			_value = value;
+			if(NameLabel != null)
+			{
+				NameLabel.Text = _value.ToString();
+			}
+		}
+	}
+	
 	public override uint? Execute()
 	{
 		return 0;

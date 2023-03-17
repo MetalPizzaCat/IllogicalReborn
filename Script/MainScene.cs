@@ -271,6 +271,17 @@ public partial class MainScene : Node
         wire.IsDisplayingValidConnection = compatible;
     }
 
+    private void DeleteNode(LogicNode node)
+    {
+        foreach (Connector conn in node.Inputs)
+        {
+            Wires.Where(p => p.Source == conn || p.Destination == conn).ToList().ForEach(p => p.QueueFree());
+            Wires.RemoveAll(p => p.Source == conn || p.Destination == conn);
+        }
+        Wires.Where(p => p.Source == node.OutputConnector || p.Destination == node.OutputConnector).ToList().ForEach(p => p.QueueFree());
+        Wires.RemoveAll(p => p.Source == node.OutputConnector || p.Destination == node.OutputConnector);
+    }
+
     private T? AddLogicNode<T>(PackedScene? prefab) where T : LogicNode
     {
         if (prefab == null)
@@ -286,6 +297,7 @@ public partial class MainScene : Node
         node.OnNodeSelected += OnNodeSelected;
         node.OnNodeDeselected += OnNodeDeselected;
         node.OnConnectionSizeUpdated += OnConnectorsSizeUpdate;
+        node.OnNodeDeleted += DeleteNode;
         return node;
     }
 

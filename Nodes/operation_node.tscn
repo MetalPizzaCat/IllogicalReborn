@@ -6,3 +6,7 @@
 [node name="OperationNode" instance=ExtResource("1_px6dc")]
 script = ExtResource("2_v6475")
 Operation = 0
+
+[node name="NameLabel" parent="." index="6"]
+offset_left = -48.0
+offset_right = -8.0

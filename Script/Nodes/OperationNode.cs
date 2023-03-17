@@ -12,8 +12,20 @@ public partial class OperationNode : LogicNode
 		Xor,
 	}
 
+	private OperationType _type = OperationType.And;
+
 	[Export]
-	public OperationType Operation { get; set; } = OperationNode.OperationType.And;
+	public OperationType Operation
+	{
+		get => _type;
+		set {
+			_type = value;
+			if(NameLabel != null)
+			{
+				NameLabel.Text = Operation.ToString();
+			}
+		}
+	}
 	public UInt32? CurrentValue => Inputs.FirstOrDefault()?.Connection?.ParentNode.Execute();
 
 	public override string DisplayName => $"{Operation.ToString()} gate";

@@ -1,15 +1,19 @@
-[gd_scene load_steps=4 format=3 uid="uid://cxn1fucweqvo2"]
+[gd_scene load_steps=5 format=3 uid="uid://cxn1fucweqvo2"]
 
 [ext_resource type="Script" path="res://Script/Nodes/LogicNode.cs" id="1_e2fq6"]
 [ext_resource type="PackedScene" uid="uid://bs6buorisdaki" path="res://connector.tscn" id="2_smbb3"]
 [ext_resource type="Texture2D" uid="uid://wurfl4d5gx1b" path="res://icon.svg" id="3_etb5j"]
 
-[node name="LogicNode" type="Node2D" node_paths=PackedStringArray("InputNodeParent", "ContextMenu", "DebugInfoLabel", "OutputConnector")]
+[sub_resource type="LabelSettings" id="LabelSettings_8kesq"]
+font_size = 50
+
+[node name="LogicNode" type="Node2D" node_paths=PackedStringArray("InputNodeParent", "ContextMenu", "DebugInfoLabel", "NameLabel", "OutputConnector")]
 script = ExtResource("1_e2fq6")
 ConnectorPrefab = ExtResource("2_smbb3")
 InputNodeParent = NodePath("InputConnectors")
 ContextMenu = NodePath("PopupMenu")
 DebugInfoLabel = NodePath("DEBUG_InfoLabel")
+NameLabel = NodePath("NameLabel")
 OutputConnector = NodePath("OutputConnector")
 
 [node name="PopupMenu" type="PopupMenu" parent="."]
@@ -48,6 +52,14 @@ offset_left = -64.0
 offset_top = -96.0
 offset_right = 56.0
 offset_bottom = -64.0
+
+[node name="NameLabel" type="Label" parent="."]
+offset_left = -24.0
+offset_top = -32.0
+offset_right = 16.0
+offset_bottom = 40.0
+label_settings = SubResource("LabelSettings_8kesq")
+horizontal_alignment = 1
 
 [connection signal="index_pressed" from="PopupMenu" to="." method="OnContextMenuPressed"]
 [connection signal="button_down" from="Button" to="." method="Grab"]
