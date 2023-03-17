@@ -8,11 +8,11 @@ public partial class Connector : Node2D
 {
 	public delegate void SelectedEventHandler(Connector connector);
 	public delegate void ConnectionRemovedEventHandler(Connector self, Connector other);
-	public delegate void IncompatibleSizesDetectedEventHandler(Connector self, Connector other);
+	public delegate void ConnectionSizeUpdatedEventHandler(Connector self, Connector other, bool compatible);
 
 	public event SelectedEventHandler? OnSelected;
 	public event ConnectionRemovedEventHandler? OnConnectionRemoved;
-	public event IncompatibleSizesDetectedEventHandler? OnIncompatibleSizesDetected;
+	public event ConnectionSizeUpdatedEventHandler? OnConnectionSizeUpdated;
 
 	[Export]
 	public bool IsOutput { get; set; } = false;
@@ -56,6 +56,7 @@ public partial class Connector : Node2D
 		{
 			_hasIncompatibleConnection = value;
 			DataSizeLabel.Visible = value;
+			DataSizeLabel.Text = DataSize.ToString();
 		}
 	}
 
@@ -90,11 +91,7 @@ public partial class Connector : Node2D
 				_connections[0] = other;
 			}
 		}
-		if (other.DataSize != DataSize)
-		{
-			// Notify whoever is listening that computation can not proceed
-			OnIncompatibleSizesDetected?.Invoke(this, other);
-		}
+		NotifyConnectedNodesAboutSizeChange();
 	}
 
 	public bool CanConnect(Connector connector)
@@ -122,12 +119,9 @@ public partial class Connector : Node2D
 		HasIncompatibleConnection = true;
 		foreach (Connector other in Connections)
 		{
-			if (other.DataSize != DataSize)
-			{
-				// Notify whoever is listening that computation can not proceed
-				OnIncompatibleSizesDetected?.Invoke(this, other);
-				HasIncompatibleConnection = false;
-			}
+			// Notify whoever is listening that computation can not proceed
+			OnConnectionSizeUpdated?.Invoke(this, other, other.DataSize == DataSize);
+			HasIncompatibleConnection &= other.DataSize == DataSize;
 		}
 	}
 }

@@ -20,10 +20,10 @@ texture = ExtResource("1_t8eek")
 
 [node name="DataSizeLabel" type="Label" parent="."]
 visible = false
-offset_left = -24.0
-offset_top = -48.0
-offset_right = 16.0
-offset_bottom = -25.0
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 24.0
+offset_bottom = 10.0
 text = "1"
 
 [connection signal="pressed" from="Button" to="." method="Select"]
