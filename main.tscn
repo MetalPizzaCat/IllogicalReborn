@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://dcq8kej6a3fjm"]
+[gd_scene load_steps=5 format=3 uid="uid://dcq8kej6a3fjm"]
 
 [ext_resource type="PackedScene" uid="uid://6w3butyni4vy" path="res://MainScene.tscn" id="1_62umj"]
 [ext_resource type="Script" path="res://Script/WindowMenu.cs" id="2_36w7i"]
 [ext_resource type="PackedScene" uid="uid://c6ygkydyym4ul" path="res://Nodes/const_node.tscn" id="2_ik7h8"]
+[ext_resource type="PackedScene" uid="uid://bsvm534jowf24" path="res://node_context_menu.tscn" id="4_t8ffv"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -13,7 +14,8 @@ grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_horizontal_guides_ = []
 
-[node name="MainScene" parent="." instance=ExtResource("1_62umj")]
+[node name="MainScene" parent="." node_paths=PackedStringArray("ContextMenu") instance=ExtResource("1_62umj")]
+ContextMenu = NodePath("../CanvasLayer/NodeContextMenu")
 ConstNodePrefab = ExtResource("2_ik7h8")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -67,6 +69,10 @@ offset_right = 896.256
 offset_bottom = -616.0
 mouse_filter = 2
 color = Color(0, 0, 0, 0.384314)
+
+[node name="NodeContextMenu" parent="CanvasLayer" instance=ExtResource("4_t8ffv")]
+offset_left = 8.0
+offset_right = 8.0
 
 [node name="MenuBar" type="MenuBar" parent="CanvasLayer" node_paths=PackedStringArray("NodeScene", "SaveFileDialog")]
 offset_right = 1152.0

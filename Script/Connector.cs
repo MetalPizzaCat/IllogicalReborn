@@ -6,107 +6,128 @@ using System.Linq;
 
 public partial class Connector : Node2D
 {
-    public delegate void SelectedEventHandler(Connector connector);
-    public delegate void ConnectionRemovedEventHandler(Connector self, Connector other);
-    public delegate void IncompatibleSizesDetectedEventHandler(Connector self, Connector other);
+	public delegate void SelectedEventHandler(Connector connector);
+	public delegate void ConnectionRemovedEventHandler(Connector self, Connector other);
+	public delegate void IncompatibleSizesDetectedEventHandler(Connector self, Connector other);
 
-    public event SelectedEventHandler? OnSelected;
-    public event ConnectionRemovedEventHandler? OnConnectionRemoved;
-    public event IncompatibleSizesDetectedEventHandler? OnIncompatibleSizesDetected;
+	public event SelectedEventHandler? OnSelected;
+	public event ConnectionRemovedEventHandler? OnConnectionRemoved;
+	public event IncompatibleSizesDetectedEventHandler? OnIncompatibleSizesDetected;
 
-    [Export]
-    public bool IsOutput { get; set; } = false;
+	[Export]
+	public bool IsOutput { get; set; } = false;
 
-    /// <summary>
-    /// Which data size does this connector use. Taken from parent node<para/>
-    /// If parent node is null then 0 will be returned
-    /// </summary>
-    public int DataSize => ParentNode?.DataSize ?? 0;
+	[Export]
+	public Label DataSizeLabel { get; set; }
 
-    private List<Connector> _connections = new List<Connector>();
+	/// <summary>
+	/// Which data size does this connector use. Taken from parent node<para/>
+	/// If parent node is null then 0 will be returned
+	/// </summary>
+	public int DataSize => ParentNode?.DataSize ?? 0;
 
-    /// <summary>
-    /// All connectors that this connector is connected to.
-    /// </summary>
-    public List<Connector> Connections => _connections;
+	private List<Connector> _connections = new List<Connector>();
 
-    /// <summary>
-    /// Get connector that is currently connected.<para/>
-    /// Meant for Input type as Output can have multiple connections, so Connections list should be used instead.
-    /// </summary>
-    /// <value></value>
-    public Connector? Connection => _connections.FirstOrDefault();
+	/// <summary>
+	/// All connectors that this connector is connected to.
+	/// </summary>
+	public List<Connector> Connections => _connections;
 
-    public bool CanFitMoreConnections => IsOutput || _connections.Count == 0 || _connections[0] == null;
-    public LogicNode? ParentNode { get; set; } = null;
+	/// <summary>
+	/// Get connector that is currently connected.<para/>
+	/// Meant for Input type as Output can have multiple connections, so Connections list should be used instead.
+	/// </summary>
+	/// <value></value>
+	public Connector? Connection => _connections.FirstOrDefault();
 
-    private void Select()
-    {
-        OnSelected?.Invoke(this);
-    }
+	public bool CanFitMoreConnections => IsOutput || _connections.Count == 0 || _connections[0] == null;
+	public LogicNode? ParentNode { get; set; } = null;
 
-    /// <summary>
-    /// Add connection to other connector, if output new connection will be added<para/>
-    /// If input connection at _connections[0] (aka Connection property) will be overridden
-    /// </summary>
-    /// <param name="other"></param>
-    public void ConnectTo(Connector other)
-    {
-        //Output can have as many connections as needed
-        if (IsOutput)
-        {
-            if (!_connections.Contains(other))
-            {
-                _connections.Add(other);
-            }
-        }
-        else
-        {
-            if (_connections.Count == 0)
-            {
-                _connections.Add(other);
-            }
-            else
-            {
-                _connections[0] = other;
-            }
-        }
-        if (other.DataSize != DataSize)
-        {
-            // Notify whoever is listening that computation can not proceed
-            OnIncompatibleSizesDetected?.Invoke(this, other);
-        }
-    }
+	private bool _hasIncompatibleConnection = false;
 
-    public bool CanConnect(Connector connector)
-    {
-        return connector != this &&                                     // Can not connect to itself
-                connector.IsOutput != IsOutput &&                       // Can not connect to same type of connector
-                  ParentNode != null &&                                 // Must have a parent
-                  connector.ParentNode != ParentNode &&                 // Can't connect to another connector on the same node
-                CanFitMoreConnections;
+	/// <summary>
+	/// True if any of the connected nodes have data size different from current data size
+	/// </summary>
+	/// <value></value>
+	public bool HasIncompatibleConnection
+	{
+		get => _hasIncompatibleConnection;
+		set
+		{
+			_hasIncompatibleConnection = value;
+			DataSizeLabel.Visible = value;
+		}
+	}
 
-    }
+	private void Select()
+	{
+		OnSelected?.Invoke(this);
+	}
 
-    /// <summary>
-    /// Remove connection to other node
-    /// </summary>
-    /// <param name="connector"></param>
-    public void DisconnectFrom(Connector connector)
-    {
-        _connections.Remove(connector);
-        OnConnectionRemoved?.Invoke(this, connector);
-    }
+	/// <summary>
+	/// Add connection to other connector, if output new connection will be added<para/>
+	/// If input connection at _connections[0] (aka Connection property) will be overridden
+	/// </summary>
+	/// <param name="other"></param>
+	public void ConnectTo(Connector other)
+	{
+		//Output can have as many connections as needed
+		if (IsOutput)
+		{
+			if (!_connections.Contains(other))
+			{
+				_connections.Add(other);
+			}
+		}
+		else
+		{
+			if (_connections.Count == 0)
+			{
+				_connections.Add(other);
+			}
+			else
+			{
+				_connections[0] = other;
+			}
+		}
+		if (other.DataSize != DataSize)
+		{
+			// Notify whoever is listening that computation can not proceed
+			OnIncompatibleSizesDetected?.Invoke(this, other);
+		}
+	}
 
-    public void NotifyConnectedNodesAboutSizeChange()
-    {
-        foreach (Connector other in Connections)
-        {
-            if (other.DataSize != DataSize)
-            {
-                // Notify whoever is listening that computation can not proceed
-                OnIncompatibleSizesDetected?.Invoke(this, other);
-            }
-        }
-    }
+	public bool CanConnect(Connector connector)
+	{
+		return connector != this &&                                     // Can not connect to itself
+				connector.IsOutput != IsOutput &&                       // Can not connect to same type of connector
+				  ParentNode != null &&                                 // Must have a parent
+				  connector.ParentNode != ParentNode &&                 // Can't connect to another connector on the same node
+				CanFitMoreConnections;
+
+	}
+
+	/// <summary>
+	/// Remove connection to other node
+	/// </summary>
+	/// <param name="connector"></param>
+	public void DisconnectFrom(Connector connector)
+	{
+		_connections.Remove(connector);
+		OnConnectionRemoved?.Invoke(this, connector);
+	}
+
+	public void NotifyConnectedNodesAboutSizeChange()
+	{
+		HasIncompatibleConnection = true;
+		foreach (Connector other in Connections)
+		{
+			if (other.DataSize != DataSize)
+			{
+				// Notify whoever is listening that computation can not proceed
+				OnIncompatibleSizesDetected?.Invoke(this, other);
+				HasIncompatibleConnection = false;
+			}
+		}
+	}
 }

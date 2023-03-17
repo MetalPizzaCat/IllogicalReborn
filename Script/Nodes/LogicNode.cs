@@ -60,6 +60,8 @@ public partial class LogicNode : Node2D
 		}
 	}
 
+	public virtual string DisplayName => "Invalid node";
+
 	public bool IsGrabbed { get; set; } = false;
 
 	[Export]
