@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://6w3butyni4vy"]
+[gd_scene load_steps=9 format=3 uid="uid://6w3butyni4vy"]
 
 [ext_resource type="Script" path="res://Script/MainScene.cs" id="1_ux4c7"]
 [ext_resource type="PackedScene" uid="uid://eycgxhrmcqlg" path="res://Nodes/operation_node.tscn" id="2_h1e4u"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bqs076b4kpaja" path="res://Nodes/not_scene.tscn" id="4_j8qlf"]
 [ext_resource type="Texture2D" uid="uid://wurfl4d5gx1b" path="res://icon.svg" id="6_p2ilx"]
 [ext_resource type="Script" path="res://Script/CanvasControl.cs" id="7_hi55h"]
+[ext_resource type="PackedScene" uid="uid://ta1ejvcd07ex" path="res://connection_line.tscn" id="8_7rmf6"]
 
 [node name="MainScene" type="Node2D" node_paths=PackedStringArray("CanvasControl", "CurrentCamera", "ConnectionLinePreview", "DebugInfoLabel", "NodeSpawnLocation")]
 script = ExtResource("1_ux4c7")
@@ -44,7 +45,7 @@ script = ExtResource("7_hi55h")
 
 [node name="NodeSpawnLocation" type="Node2D" parent="."]
 
-[node name="ConnectionLinePreview" type="Line2D" parent="."]
+[node name="ConnectionLinePreview" parent="." instance=ExtResource("8_7rmf6")]
 
 [node name="Offsethelper" type="Sprite2D" parent="."]
 modulate = Color(0.552941, 0.494118, 1, 1)

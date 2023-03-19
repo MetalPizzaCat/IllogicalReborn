@@ -5,7 +5,7 @@ using System;
 public partial class ConnectionWire : Node2D
 {
 	[Export]
-	public Line2D? Line { get; set; }
+	public ConnectionLine? Line { get; set; }
 
 	[Export]
 	public Color ValidConnectionColor { get; set; } = Godot.Colors.White;
@@ -27,7 +27,7 @@ public partial class ConnectionWire : Node2D
 			{
 				return;
 			}
-			Line.SetPointPosition(0, _source.GlobalPosition);
+			Line.Start = _source.GlobalPosition;
 		}
 	}
 
@@ -41,7 +41,7 @@ public partial class ConnectionWire : Node2D
 			{
 				return;
 			}
-			Line.SetPointPosition(1, _destination.GlobalPosition);
+			Line.End = _destination.GlobalPosition;
 		}
 	}
 
@@ -63,19 +63,15 @@ public partial class ConnectionWire : Node2D
 	public override void _Ready()
 	{
 		base._Ready();
-		if (Line != null)
-		{
-			Line.Points = new Vector2[2];
-		}
 	}
 
 	public override void _Process(double delta)
 	{
 		base._Process(delta);
-		if (Destination != null && Source != null)
+		if (Destination != null && Source != null && Line != null)
 		{
-			Line.SetPointPosition(0, _source.GlobalPosition);
-			Line.SetPointPosition(1, _destination.GlobalPosition);
+			Line.Start = _source.GlobalPosition;
+			Line.End = _destination.GlobalPosition;
 		}
 	}
 }

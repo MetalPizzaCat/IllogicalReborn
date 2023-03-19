@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://bngplu2gqmevw"]
+
+[ext_resource type="PackedScene" uid="uid://ta1ejvcd07ex" path="res://connection_line.tscn" id="1_gotov"]
+
+[node name="ConnectionLineTest" type="Node2D"]
+
+[node name="ConnectionLine" parent="." instance=ExtResource("1_gotov")]
+position = Vector2(736, 400)
+points = PackedVector2Array(0, 0, 0, 0, 0, 0, 50, 50)
+End = Vector2(50, 50)

@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://ta1ejvcd07ex"]
+
+[ext_resource type="Script" path="res://Script/ConnectionLine.cs" id="1_smedw"]
+
+[node name="ConnectionLine" type="Line2D"]
+points = PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0)
+width = 4.0
+script = ExtResource("1_smedw")
