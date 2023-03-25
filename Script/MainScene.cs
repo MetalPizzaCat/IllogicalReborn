@@ -218,6 +218,7 @@ public partial class MainScene : Node
 					// disconnect this node from other
 					connector.DisconnectFrom(connector.Connection);
 					//this is getting confusing 
+					Simulate();
 					return;
 				}
 			}
@@ -242,6 +243,7 @@ public partial class MainScene : Node
 			connector.ConnectTo(_currentlySelectedConnector);
 			CancelConnection();
 		}
+		Simulate();
 
 	}
 
@@ -268,6 +270,7 @@ public partial class MainScene : Node
 			return;
 		}
 		wire.IsDisplayingValidConnection = compatible;
+		Simulate();
 	}
 
 	private void DeleteNode(LogicNode node)
@@ -279,6 +282,7 @@ public partial class MainScene : Node
 		}
 		Wires.Where(p => p.Source == node.OutputConnector || p.Destination == node.OutputConnector).ToList().ForEach(p => p.QueueFree());
 		Wires.RemoveAll(p => p.Source == node.OutputConnector || p.Destination == node.OutputConnector);
+		Simulate();
 	}
 
 	private T? AddLogicNode<T>(PackedScene? prefab) where T : LogicNode
@@ -303,31 +307,57 @@ public partial class MainScene : Node
 	private void AddLogicNodeAnd()
 	{
 		AddLogicNode<OperationNode>(OperationNodePrefab);
+		Simulate();
 	}
 
 	private void AddDisplayNode()
 	{
 		AddLogicNode<DisplayNode>(DisplayNodePrefab);
+		Simulate();
 	}
 
 	private void AddLogicNodeNot()
 	{
 		AddLogicNode<OperationNode>(OperationNotNodePrefab);
+		Simulate();
 	}
 
 	private void AddLogicNodeOr()
 	{
 		AddLogicNode<OperationNode>(OperationNodePrefab).Operation = OperationNode.OperationType.Or;
+		Simulate();
 	}
 
 
 	private void AddLogicNodeXor()
 	{
 		AddLogicNode<OperationNode>(OperationNodePrefab).Operation = OperationNode.OperationType.Xor;
+		Simulate();
 	}
 
 	private void AddLogicNodeConst()
 	{
 		AddLogicNode<ConstNode>(ConstNodePrefab);
+		Simulate();
+	}
+
+	private void Simulate()
+	{
+		List<LogicNode> endNodes = new List<LogicNode>();
+		// nodes without output connections are best start because there is nothing else to simulate after them
+		// picking only them and traversing upwards means less tree traversals
+		foreach (LogicNode node in LogicComponents)
+		{
+			if (node.OutputNodes.Count == 0)
+			{
+				endNodes.Add(node);
+			}
+		}
+		GD.Print($"Ahooga: {endNodes.Count}");
+		// make every node calculate values
+		foreach (LogicNode node in endNodes)
+		{
+			node.Simulate();
+		}
 	}
 }

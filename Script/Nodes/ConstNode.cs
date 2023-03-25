@@ -16,15 +16,19 @@ public partial class ConstNode : LogicNode
 		set
 		{
 			_value = value;
-			if(NameLabel != null)
+			if (NameLabel != null)
 			{
 				NameLabel.Text = _value.ToString();
 			}
 		}
 	}
-	
-	public override uint? Execute()
+	public override void Simulate()
 	{
-		return 0;
+		// there is no point in traversing upwards
+		OutputConnector.Value = 0;
 	}
+	// public override uint? Execute()
+	// {
+	// 	return 0;
+	// }
 }

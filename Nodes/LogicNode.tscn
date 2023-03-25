@@ -7,15 +7,15 @@
 [sub_resource type="LabelSettings" id="LabelSettings_8kesq"]
 font_size = 50
 
-[node name="LogicNode" type="Node2D" node_paths=PackedStringArray("InputNodeParent", "ContextMenu", "DebugInfoLabel", "NameLabel", "OutputConnector")]
+[node name="LogicNode" type="Node2D" node_paths=PackedStringArray("InputNodeParent", "OutputNodeParent", "ContextMenu", "DebugInfoLabel", "NameLabel")]
 script = ExtResource("1_e2fq6")
 ConnectorPrefab = ExtResource("2_smbb3")
 InputNodeParent = NodePath("InputConnectors")
+OutputNodeParent = NodePath("OutputConnectors")
 ContextMenu = NodePath("PopupMenu")
 DebugInfoLabel = NodePath("DEBUG_InfoLabel")
 NameLabel = NodePath("NameLabel")
 GridSize = 8.0
-OutputConnector = NodePath("OutputConnector")
 
 [node name="PopupMenu" type="PopupMenu" parent="."]
 item_count = 4
@@ -41,12 +41,11 @@ offset_bottom = 64.0
 [node name="Body" type="Sprite2D" parent="."]
 texture = ExtResource("3_etb5j")
 
-[node name="OutputConnector" parent="." instance=ExtResource("2_smbb3")]
-position = Vector2(88, 0)
-IsOutput = true
-
 [node name="InputConnectors" type="Node2D" parent="."]
 position = Vector2(-88, -40)
+
+[node name="OutputConnectors" type="Node2D" parent="."]
+position = Vector2(88, -40)
 
 [node name="DEBUG_InfoLabel" type="Label" parent="."]
 offset_left = -64.0

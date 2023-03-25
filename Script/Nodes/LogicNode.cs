@@ -1,7 +1,8 @@
+#nullable enable
 using Godot;
 using System;
 using System.Collections.Generic;
-
+using System.Linq;
 
 public partial class LogicNode : Node2D
 {
@@ -13,7 +14,6 @@ public partial class LogicNode : Node2D
 	public delegate void ConnectionSizeUpdatedEventHandler(Connector self, Connector other, bool compatible);
 
 	// Events can be nullable because they are assigned from code
-#nullable enable
 	public event ConnectorSelectedEventHandler? OnConnectorSelected;
 	public event NodeSelectedEventHandler? OnNodeSelected;
 
@@ -30,6 +30,9 @@ public partial class LogicNode : Node2D
 	public Node2D? InputNodeParent { get; set; } = null;
 
 	[Export]
+	public Node2D? OutputNodeParent { get; set; } = null;
+
+	[Export]
 	public PopupMenu? ContextMenu { get; set; } = null;
 
 	[Export]
@@ -37,12 +40,13 @@ public partial class LogicNode : Node2D
 
 	[Export]
 	public Label? NameLabel { get; set; } = null;
-#nullable disable
 
 	[Export]
 	public float GridSize = 16;
 	[Export]
 	public int InputSize { get; set; } = 2;
+	[Export]
+	public int OutputSize { get; set; } = 1;
 
 	private int _dataSize = 1;
 	public UInt32 DataMask { get; set; } = 1;
@@ -67,22 +71,66 @@ public partial class LogicNode : Node2D
 
 	public bool IsGrabbed { get; set; } = false;
 
-	[Export]
-	public Connector OutputConnector { get; set; } = null;
-
 	public List<Connector> Inputs { get; set; } = new List<Connector>();
+
+	public List<Connector> Outputs { get; set; } = new List<Connector>();
+
+	public Connector? OutputConnector => Outputs.FirstOrDefault();
 
 	public int Id { get; set; } = -1;
 
+	protected bool Simulated = false;
+
+	public List<LogicNode> InputNodes
+	{
+		get
+		{
+			List<LogicNode> nodes = new List<LogicNode>();
+			foreach (Connector conn in Inputs)
+			{
+				if (conn.Connection?.ParentNode != null)
+				{
+					nodes.Add(conn.Connection?.ParentNode);
+				}
+			}
+			return nodes;
+		}
+	}
+
+	public List<LogicNode> OutputNodes
+	{
+		get
+		{
+			List<LogicNode> nodes = new List<LogicNode>();
+			foreach (Connector conn in Outputs)
+			{
+				if (conn.Connection?.ParentNode != null)
+				{
+					nodes.Add(conn.Connection?.ParentNode);
+				}
+			}
+			return nodes;
+		}
+	}
+
 	public override void _Ready()
 	{
-		OutputConnector.OnSelected += (Connector connector) => OnConnectorSelected?.Invoke(connector);
-		OutputConnector.OnConnectionSizeUpdated += (Connector source, Connector destination, bool compatible) => OnConnectionSizeUpdated?.Invoke(source, destination, compatible);
-		OutputConnector.ParentNode = this;
 		if (ConnectorPrefab == null || InputNodeParent == null)
 		{
 			return;
 		}
+		for (int i = 0; i < OutputSize; i++)
+		{
+			Connector con = ConnectorPrefab.Instantiate<Connector>();
+			OutputNodeParent.AddChild(con);
+			Outputs.Add(con);
+			con.IsOutput = true;
+			con.Position = new Vector2(0, i * 48);
+			con.OnSelected += (Connector connector) => OnConnectorSelected?.Invoke(connector);
+			con.OnConnectionSizeUpdated += (Connector source, Connector destination, bool compatible) => OnConnectionSizeUpdated?.Invoke(source, destination, compatible);
+			con.ParentNode = this;
+		}
+
 		for (int i = 0; i < InputSize; i++)
 		{
 			Connector con = ConnectorPrefab.Instantiate<Connector>();
@@ -117,19 +165,20 @@ public partial class LogicNode : Node2D
 		Position = location.Snapped(new Vector2(GridSize, GridSize));
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
+	/// <summary>
+	/// Simulate this node and write the results into connectors <para/>
+	/// If any of the input nodes are not simulated node will request it to be simulated
+	/// </summary>
+	public virtual void Simulate()
 	{
-
-		if (DebugInfoLabel != null)
+		if (Simulated)
 		{
-			DebugInfoLabel.Text = Position.ToString();
+			return;
 		}
-	}
-
-	public virtual UInt32? Execute()
-	{
-		return null;
+		foreach (LogicNode node in InputNodes)
+		{
+			node.Simulate();
+		}
 	}
 
 	private void Grab()
@@ -159,11 +208,10 @@ public partial class LogicNode : Node2D
 		}
 	}
 
-
 	private void OnContextMenuPressed(long index)
 	{
 		if (index == 0)
-		{			
+		{
 			foreach (Connector input in Inputs)
 			{
 				input.Connection?.DisconnectFrom(input);
