@@ -48,6 +48,8 @@ public partial class MainScene : Node
 	[Export]
 	public PackedScene? ConstNodePrefab { get; set; } = null;
 
+	[Export]
+	public ColorRect? SelectionBox { get; set; } = null;
 
 	/// <summary>
 	/// All of the logic nodes of the scheme
@@ -88,6 +90,11 @@ public partial class MainScene : Node
 	public Vector2 CurrentPointerPosition => (MousePosition / CurrentZoom + CameraOffset);
 
 	/// <summary>
+	/// Location from which selection started
+	/// </summary>
+	private Vector2 _currentSelectionBoxStart = Vector2.Zero;
+
+	/// <summary>
 	///  Current selector object that is being connected from
 	/// </summary>
 	private Connector? _currentlySelectedConnector = null;
@@ -106,6 +113,21 @@ public partial class MainScene : Node
 	private int _currentNodeId = 0;
 
 	private string? _currentPath = null;
+
+	private bool _isSelecting = false;
+
+	public bool IsSelecting
+	{
+		get => _isSelecting;
+		set
+		{
+			_isSelecting = value;
+			if (SelectionBox != null)
+			{
+				SelectionBox.Visible = value;
+			}
+		}
+	}
 
 
 	/// <summary>
@@ -149,11 +171,29 @@ public partial class MainScene : Node
 				{
 					ConnectionLinePreview.Start = (_currentlySelectedConnector.GlobalPosition);
 				}
-
 			}
 			if (_currentlySelectedNode != null)
 			{
 				_currentlySelectedNode.MoveTo(CurrentPointerPosition);
+			}
+			else if (SelectionBox != null && _isSelecting)
+			{
+
+				Vector2 min = new Vector2
+				(
+					Math.Min(_currentSelectionBoxStart.X, CurrentPointerPosition.X),
+					Math.Min(_currentSelectionBoxStart.Y, CurrentPointerPosition.Y)
+				);
+				Vector2 max = new Vector2
+				(
+					Math.Max(_currentSelectionBoxStart.X, CurrentPointerPosition.X),
+					Math.Max(_currentSelectionBoxStart.Y, CurrentPointerPosition.Y)
+				);
+				SelectionBox.GlobalPosition = min;
+				SelectionBox.Size = max - min;
+
+				GD.Print(LogicComponents.Where(p => p.Position + new Vector2(16, 16) <= max && p.Position > min).Count());
+
 			}
 			if (DebugInfoLabel != null)
 			{
@@ -167,6 +207,9 @@ public partial class MainScene : Node
 		base._Ready();
 		ConnectionLinePreview.Visible = false;
 		GetWindow().Title = AppTitle;
+
+		CanvasControl.OnSelectionBegun += (Vector2 loc) => { _currentSelectionBoxStart = CurrentPointerPosition; IsSelecting = true; };
+		CanvasControl.OnSelectionEnded += () => { IsSelecting = false; SelectionBox.Size = Vector2.Zero; };
 	}
 
 	public void SaveToFile(string path)
