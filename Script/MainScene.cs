@@ -105,6 +105,11 @@ public partial class MainScene : Node
 	private LogicNode? _currentlySelectedNode = null;
 
 	/// <summary>
+	/// All nodes selected via selection box
+	/// </summary>
+	private List<LogicNode> _currentGroupSelection = new List<LogicNode>();
+
+	/// <summary>
 	/// Same as _currentlySelectedNode but does not get cleared when user releases the node<para/>
 	/// Intended for use with context menus
 	/// </summary>
@@ -174,31 +179,56 @@ public partial class MainScene : Node
 			}
 			if (_currentlySelectedNode != null)
 			{
-				_currentlySelectedNode.MoveTo(CurrentPointerPosition);
+				MoveNodes();
 			}
 			else if (SelectionBox != null && _isSelecting)
 			{
-
-				Vector2 min = new Vector2
-				(
-					Math.Min(_currentSelectionBoxStart.X, CurrentPointerPosition.X),
-					Math.Min(_currentSelectionBoxStart.Y, CurrentPointerPosition.Y)
-				);
-				Vector2 max = new Vector2
-				(
-					Math.Max(_currentSelectionBoxStart.X, CurrentPointerPosition.X),
-					Math.Max(_currentSelectionBoxStart.Y, CurrentPointerPosition.Y)
-				);
-				SelectionBox.GlobalPosition = min;
-				SelectionBox.Size = max - min;
-
-				GD.Print(LogicComponents.Where(p => p.Position + new Vector2(16, 16) <= max && p.Position > min).Count());
-
+				SelectNodes();
 			}
 			if (DebugInfoLabel != null)
 			{
 				DebugInfoLabel.Text = $"{MousePosition} \n {CameraOffset} \n {CurrentPointerPosition}";
 			}
+		}
+	}
+
+	public void MoveNodes()
+	{
+		if (_currentlySelectedNode == null)
+		{
+			return;
+		}
+		// solution for movement: calculate distance from node before move and use that 
+		foreach (LogicNode node in _currentGroupSelection.Where(p => p != _currentlySelectedNode))
+		{
+			Vector2 offset = node.GlobalPosition - _currentlySelectedNode.GlobalPosition;
+			node.MoveTo(CurrentPointerPosition + offset);
+		}
+		_currentlySelectedNode.MoveTo(CurrentPointerPosition);
+	}
+
+	public void SelectNodes()
+	{
+		Vector2 min = new Vector2
+		(
+			Math.Min(_currentSelectionBoxStart.X, CurrentPointerPosition.X),
+			Math.Min(_currentSelectionBoxStart.Y, CurrentPointerPosition.Y)
+		);
+		Vector2 max = new Vector2
+		(
+			Math.Max(_currentSelectionBoxStart.X, CurrentPointerPosition.X),
+			Math.Max(_currentSelectionBoxStart.Y, CurrentPointerPosition.Y)
+		);
+		SelectionBox.GlobalPosition = min;
+		SelectionBox.Size = max - min;
+		foreach (LogicNode node in _currentGroupSelection)
+		{
+			node.IsSelected = false;
+		}
+		_currentGroupSelection = CurrentGroupSelection;
+		foreach (LogicNode node in _currentGroupSelection)
+		{
+			node.IsSelected = true;
 		}
 	}
 
@@ -209,8 +239,29 @@ public partial class MainScene : Node
 		GetWindow().Title = AppTitle;
 
 		CanvasControl.OnSelectionBegun += (Vector2 loc) => { _currentSelectionBoxStart = CurrentPointerPosition; IsSelecting = true; };
-		CanvasControl.OnSelectionEnded += () => { IsSelecting = false; SelectionBox.Size = Vector2.Zero; };
+		CanvasControl.OnSelectionEnded += FinishSelection;
 	}
+
+	public void FinishSelection()
+	{
+		foreach (LogicNode node in _currentGroupSelection)
+		{
+			node.IsSelected = false;
+		}
+		_currentGroupSelection = CurrentGroupSelection;
+		foreach (LogicNode node in _currentGroupSelection)
+		{
+			node.IsSelected = true;
+		}
+		IsSelecting = false;
+		SelectionBox.Size = Vector2.Zero;
+	}
+
+	/// <summary>
+	/// Get nodes that were covered by the selection box
+	/// </summary>
+	/// <returns></returns>
+	public List<LogicNode> CurrentGroupSelection => SelectionBox == null ? new() : LogicComponents.Where(p => p.Position + new Vector2(16, 16) <= (SelectionBox.GlobalPosition + SelectionBox.Size) && p.Position > SelectionBox.GlobalPosition).ToList();
 
 	public void SaveToFile(string path)
 	{

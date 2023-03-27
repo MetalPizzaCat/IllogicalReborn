@@ -24,6 +24,9 @@ public partial class LogicNode : Node2D
 
 
 	[Export]
+	public Sprite2D? SelectionPreview { get; set; } = null;
+
+	[Export]
 	public PackedScene? ConnectorPrefab { get; set; } = null;
 
 	[Export]
@@ -64,6 +67,21 @@ public partial class LogicNode : Node2D
 				DataMask |= (1u << i);
 			}
 			NotifyConnectorsAboutSizeChange();
+		}
+	}
+
+	private bool _isSelected = false;
+
+	public bool IsSelected
+	{
+		get => _isSelected;
+		set
+		{
+			_isSelected = value;
+			if(SelectionPreview != null)
+			{
+				SelectionPreview.Visible = value;
+			}
 		}
 	}
 

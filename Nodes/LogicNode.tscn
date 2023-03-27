@@ -7,8 +7,9 @@
 [sub_resource type="LabelSettings" id="LabelSettings_8kesq"]
 font_size = 50
 
-[node name="LogicNode" type="Node2D" node_paths=PackedStringArray("InputNodeParent", "OutputNodeParent", "ContextMenu", "DebugInfoLabel", "NameLabel")]
+[node name="LogicNode" type="Node2D" node_paths=PackedStringArray("SelectionPreview", "InputNodeParent", "OutputNodeParent", "ContextMenu", "DebugInfoLabel", "NameLabel")]
 script = ExtResource("1_e2fq6")
+SelectionPreview = NodePath("SelectionPreivew")
 ConnectorPrefab = ExtResource("2_smbb3")
 InputNodeParent = NodePath("InputConnectors")
 OutputNodeParent = NodePath("OutputConnectors")
@@ -37,6 +38,12 @@ offset_left = -64.0
 offset_top = -64.0
 offset_right = 64.0
 offset_bottom = 64.0
+
+[node name="SelectionPreivew" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(0.0352941, 1, 0.729412, 0.384314)
+scale = Vector2(1.375, 1.375)
+texture = ExtResource("3_etb5j")
 
 [node name="Body" type="Sprite2D" parent="."]
 texture = ExtResource("3_etb5j")
