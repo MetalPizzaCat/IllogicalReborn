@@ -48,6 +48,8 @@ public partial class MainScene : Node
 	[Export]
 	public PackedScene? ConstNodePrefab { get; set; } = null;
 
+	[Export]
+	public ColorRect? SelectionBox { get; set; } = null;
 
 	/// <summary>
 	/// All of the logic nodes of the scheme
@@ -88,6 +90,11 @@ public partial class MainScene : Node
 	public Vector2 CurrentPointerPosition => (MousePosition / CurrentZoom + CameraOffset);
 
 	/// <summary>
+	/// Location from which selection started
+	/// </summary>
+	private Vector2 _currentSelectionBoxStart = Vector2.Zero;
+
+	/// <summary>
 	///  Current selector object that is being connected from
 	/// </summary>
 	private Connector? _currentlySelectedConnector = null;
@@ -98,6 +105,11 @@ public partial class MainScene : Node
 	private LogicNode? _currentlySelectedNode = null;
 
 	/// <summary>
+	/// All nodes selected via selection box
+	/// </summary>
+	private List<LogicNode> _currentGroupSelection = new List<LogicNode>();
+
+	/// <summary>
 	/// Same as _currentlySelectedNode but does not get cleared when user releases the node<para/>
 	/// Intended for use with context menus
 	/// </summary>
@@ -106,6 +118,21 @@ public partial class MainScene : Node
 	private int _currentNodeId = 0;
 
 	private string? _currentPath = null;
+
+	private bool _isSelecting = false;
+
+	public bool IsSelecting
+	{
+		get => _isSelecting;
+		set
+		{
+			_isSelecting = value;
+			if (SelectionBox != null)
+			{
+				SelectionBox.Visible = value;
+			}
+		}
+	}
 
 
 	/// <summary>
@@ -149,11 +176,14 @@ public partial class MainScene : Node
 				{
 					ConnectionLinePreview.Start = (_currentlySelectedConnector.GlobalPosition);
 				}
-
 			}
 			if (_currentlySelectedNode != null)
 			{
-				_currentlySelectedNode.MoveTo(CurrentPointerPosition);
+				MoveNodes();
+			}
+			else if (SelectionBox != null && _isSelecting)
+			{
+				SelectNodes();
 			}
 			if (DebugInfoLabel != null)
 			{
@@ -162,12 +192,76 @@ public partial class MainScene : Node
 		}
 	}
 
+	public void MoveNodes()
+	{
+		if (_currentlySelectedNode == null)
+		{
+			return;
+		}
+		// solution for movement: calculate distance from node before move and use that 
+		foreach (LogicNode node in _currentGroupSelection.Where(p => p != _currentlySelectedNode))
+		{
+			Vector2 offset = node.GlobalPosition - _currentlySelectedNode.GlobalPosition;
+			node.MoveTo(CurrentPointerPosition + offset);
+		}
+		_currentlySelectedNode.MoveTo(CurrentPointerPosition);
+	}
+
+	public void SelectNodes()
+	{
+		Vector2 min = new Vector2
+		(
+			Math.Min(_currentSelectionBoxStart.X, CurrentPointerPosition.X),
+			Math.Min(_currentSelectionBoxStart.Y, CurrentPointerPosition.Y)
+		);
+		Vector2 max = new Vector2
+		(
+			Math.Max(_currentSelectionBoxStart.X, CurrentPointerPosition.X),
+			Math.Max(_currentSelectionBoxStart.Y, CurrentPointerPosition.Y)
+		);
+		SelectionBox.GlobalPosition = min;
+		SelectionBox.Size = max - min;
+		foreach (LogicNode node in _currentGroupSelection)
+		{
+			node.IsSelected = false;
+		}
+		_currentGroupSelection = CurrentGroupSelection;
+		foreach (LogicNode node in _currentGroupSelection)
+		{
+			node.IsSelected = true;
+		}
+	}
+
 	public override void _Ready()
 	{
 		base._Ready();
 		ConnectionLinePreview.Visible = false;
 		GetWindow().Title = AppTitle;
+
+		CanvasControl.OnSelectionBegun += (Vector2 loc) => { _currentSelectionBoxStart = CurrentPointerPosition; IsSelecting = true; };
+		CanvasControl.OnSelectionEnded += FinishSelection;
 	}
+
+	public void FinishSelection()
+	{
+		foreach (LogicNode node in _currentGroupSelection)
+		{
+			node.IsSelected = false;
+		}
+		_currentGroupSelection = CurrentGroupSelection;
+		foreach (LogicNode node in _currentGroupSelection)
+		{
+			node.IsSelected = true;
+		}
+		IsSelecting = false;
+		SelectionBox.Size = Vector2.Zero;
+	}
+
+	/// <summary>
+	/// Get nodes that were covered by the selection box
+	/// </summary>
+	/// <returns></returns>
+	public List<LogicNode> CurrentGroupSelection => SelectionBox == null ? new() : LogicComponents.Where(p => p.Position + new Vector2(16, 16) <= (SelectionBox.GlobalPosition + SelectionBox.Size) && p.Position > SelectionBox.GlobalPosition).ToList();
 
 	public void SaveToFile(string path)
 	{
@@ -218,6 +312,7 @@ public partial class MainScene : Node
 					// disconnect this node from other
 					connector.DisconnectFrom(connector.Connection);
 					//this is getting confusing 
+					Simulate();
 					return;
 				}
 			}
@@ -242,6 +337,7 @@ public partial class MainScene : Node
 			connector.ConnectTo(_currentlySelectedConnector);
 			CancelConnection();
 		}
+		Simulate();
 
 	}
 
@@ -268,6 +364,7 @@ public partial class MainScene : Node
 			return;
 		}
 		wire.IsDisplayingValidConnection = compatible;
+		Simulate();
 	}
 
 	private void DeleteNode(LogicNode node)
@@ -279,6 +376,7 @@ public partial class MainScene : Node
 		}
 		Wires.Where(p => p.Source == node.OutputConnector || p.Destination == node.OutputConnector).ToList().ForEach(p => p.QueueFree());
 		Wires.RemoveAll(p => p.Source == node.OutputConnector || p.Destination == node.OutputConnector);
+		Simulate();
 	}
 
 	private T? AddLogicNode<T>(PackedScene? prefab) where T : LogicNode
@@ -303,31 +401,57 @@ public partial class MainScene : Node
 	private void AddLogicNodeAnd()
 	{
 		AddLogicNode<OperationNode>(OperationNodePrefab);
+		Simulate();
 	}
 
 	private void AddDisplayNode()
 	{
 		AddLogicNode<DisplayNode>(DisplayNodePrefab);
+		Simulate();
 	}
 
 	private void AddLogicNodeNot()
 	{
 		AddLogicNode<OperationNode>(OperationNotNodePrefab);
+		Simulate();
 	}
 
 	private void AddLogicNodeOr()
 	{
 		AddLogicNode<OperationNode>(OperationNodePrefab).Operation = OperationNode.OperationType.Or;
+		Simulate();
 	}
 
 
 	private void AddLogicNodeXor()
 	{
 		AddLogicNode<OperationNode>(OperationNodePrefab).Operation = OperationNode.OperationType.Xor;
+		Simulate();
 	}
 
 	private void AddLogicNodeConst()
 	{
 		AddLogicNode<ConstNode>(ConstNodePrefab);
+		Simulate();
+	}
+
+	private void Simulate()
+	{
+		List<LogicNode> endNodes = new List<LogicNode>();
+		// nodes without output connections are best start because there is nothing else to simulate after them
+		// picking only them and traversing upwards means less tree traversals
+		foreach (LogicNode node in LogicComponents)
+		{
+			if (node.OutputNodes.Count == 0)
+			{
+				endNodes.Add(node);
+			}
+		}
+		GD.Print($"Ahooga: {endNodes.Count}");
+		// make every node calculate values
+		foreach (LogicNode node in endNodes)
+		{
+			node.Simulate();
+		}
 	}
 }

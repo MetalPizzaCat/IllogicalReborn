@@ -20,6 +20,9 @@ public partial class Connector : Node2D
 	[Export]
 	public Label DataSizeLabel { get; set; }
 
+	[Export]
+	public Label DebugInfoLabel { get; set; }
+
 	/// <summary>
 	/// Which data size does this connector use. Taken from parent node<para/>
 	/// If parent node is null then 0 will be returned
@@ -42,6 +45,22 @@ public partial class Connector : Node2D
 
 	public bool CanFitMoreConnections => IsOutput || _connections.Count == 0 || _connections[0] == null;
 	public LogicNode? ParentNode { get; set; } = null;
+
+	private UInt32? _value = null;
+	/// <summary>
+	/// Current value in this node
+	/// </summary>
+	/// <value></value>
+	public UInt32? Value
+	{	
+		// because inputs only have to propagate the value that they are connected to
+		get => IsOutput ? _value : Connection?.Value;
+		set
+		{
+			_value = value;
+			DebugInfoLabel.Text = value?.ToString() ?? "null";
+		}
+	}
 
 	private bool _hasIncompatibleConnection = false;
 

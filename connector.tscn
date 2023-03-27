@@ -3,9 +3,10 @@
 [ext_resource type="Script" path="res://Script/Connector.cs" id="1_gg0yq"]
 [ext_resource type="Texture2D" uid="uid://wurfl4d5gx1b" path="res://icon.svg" id="1_t8eek"]
 
-[node name="Connector" type="Node2D" node_paths=PackedStringArray("DataSizeLabel")]
+[node name="Connector" type="Node2D" node_paths=PackedStringArray("DataSizeLabel", "DebugInfoLabel")]
 script = ExtResource("1_gg0yq")
 DataSizeLabel = NodePath("DataSizeLabel")
+DebugInfoLabel = NodePath("DEBUG_InfoLabel")
 
 [node name="Button" type="Button" parent="."]
 offset_left = -24.0
@@ -25,5 +26,11 @@ offset_top = -16.0
 offset_right = 24.0
 offset_bottom = 10.0
 text = "1"
+
+[node name="DEBUG_InfoLabel" type="Label" parent="."]
+modulate = Color(1, 0.0156863, 0, 1)
+offset_top = -16.0
+offset_right = 144.0
+offset_bottom = 23.0
 
 [connection signal="pressed" from="Button" to="." method="Select"]
