@@ -78,7 +78,7 @@ public partial class LogicNode : Node2D
 		set
 		{
 			_isSelected = value;
-			if(SelectionPreview != null)
+			if (SelectionPreview != null)
 			{
 				SelectionPreview.Visible = value;
 			}
@@ -147,6 +147,7 @@ public partial class LogicNode : Node2D
 			con.OnSelected += (Connector connector) => OnConnectorSelected?.Invoke(connector);
 			con.OnConnectionSizeUpdated += (Connector source, Connector destination, bool compatible) => OnConnectionSizeUpdated?.Invoke(source, destination, compatible);
 			con.ParentNode = this;
+			con.Id = i;
 		}
 
 		for (int i = 0; i < InputSize; i++)
@@ -158,6 +159,7 @@ public partial class LogicNode : Node2D
 			con.OnSelected += (Connector connector) => OnConnectorSelected?.Invoke(connector);
 			con.OnConnectionSizeUpdated += (Connector source, Connector destination, bool compatible) => OnConnectionSizeUpdated?.Invoke(source, destination, compatible);
 			con.ParentNode = this;
+			con.Id = i;
 		}
 	}
 
@@ -242,6 +244,17 @@ public partial class LogicNode : Node2D
 			OutputConnector.ClearConnections();
 			OnNodeDeleted?.Invoke(this);
 			QueueFree();
+		}
+	}
+
+	public virtual void GetSaveData()
+	{
+		foreach (Connector conn in Inputs)
+		{
+			if (conn.Connection != null)
+			{
+				// record connection number
+			}
 		}
 	}
 }

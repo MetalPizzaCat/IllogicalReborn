@@ -24,6 +24,14 @@ public partial class Connector : Node2D
 	public Label DebugInfoLabel { get; set; }
 
 	/// <summary>
+	/// Id of the connector relative to the parent<para/>
+	/// Connectors of output and input types have independent ids
+	/// </summary>
+	/// <value></value>
+	[Export]
+	public int Id { get; set; } = 0;
+
+	/// <summary>
 	/// Which data size does this connector use. Taken from parent node<para/>
 	/// If parent node is null then 0 will be returned
 	/// </summary>
@@ -52,7 +60,7 @@ public partial class Connector : Node2D
 	/// </summary>
 	/// <value></value>
 	public UInt32? Value
-	{	
+	{
 		// because inputs only have to propagate the value that they are connected to
 		get => IsOutput ? _value : Connection?.Value;
 		set

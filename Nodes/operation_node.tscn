@@ -7,6 +7,6 @@
 script = ExtResource("2_v6475")
 Operation = 0
 
-[node name="NameLabel" parent="." index="6"]
+[node name="NameLabel" parent="." index="7"]
 offset_left = -48.0
 offset_right = -8.0

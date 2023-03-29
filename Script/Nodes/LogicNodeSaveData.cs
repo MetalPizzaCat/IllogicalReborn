@@ -4,12 +4,24 @@ using System.Collections.Generic;
 
 public class LogicNodeSaveData
 {
-    public LogicNodeSaveData(int id, Vector2 position, string className, List<int> inputs)
+    public LogicNodeSaveData(LogicNode node)
     {
-        Id = id;
-        Position = position;
-        ClassName = className;
-        Inputs = inputs;
+        Id = node.Id;
+        Position = node.GlobalPosition;
+        ClassName = node.GetType().ToString();
+        foreach (Connector conn in node.Inputs)
+        {
+            if (conn.Connection == null)
+            {
+                continue;
+            }
+            int id = conn.Connection.ParentNode.Id;
+            int subId = conn.Connection.Id;
+            if (!Inputs.TryAdd(id, new List<int> { subId }))
+            {
+                Inputs[id].Add(subId);
+            }
+        }
     }
 
     public int Id { get; set; } = -1;
@@ -17,7 +29,7 @@ public class LogicNodeSaveData
 
     public string ClassName { get; set; } = "Lumberfoot";
 
-    public List<int> Inputs { get; set; } = new List<int>();
+    public Dictionary<int, List<int>> Inputs { get; set; } = new();
 
     public override string ToString()
     {

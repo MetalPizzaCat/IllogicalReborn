@@ -263,15 +263,29 @@ public partial class MainScene : Node
 	/// <returns></returns>
 	public List<LogicNode> CurrentGroupSelection => SelectionBox == null ? new() : LogicComponents.Where(p => p.Position + new Vector2(16, 16) <= (SelectionBox.GlobalPosition + SelectionBox.Size) && p.Position > SelectionBox.GlobalPosition).ToList();
 
+	/// <summary>
+	/// Saves all of the project related info into a file 
+	/// </summary>
+	/// <param name="path">File to save to</param>
 	public void SaveToFile(string path)
 	{
 		CurrentPath = path;
 		SaveData data = new SaveData() { CurrentId = _currentNodeId };
-		foreach (LogicNode node in LogicComponents)
+		ILookup<Type, LogicNode>? lookup = LogicComponents.ToLookup(p => p.GetType());
+		foreach (OperationNode node in LogicComponents.OfType<OperationNode>())
 		{
-			data.Nodes.Add(new LogicNodeSaveData(node.Id, node.GlobalPosition, node.GetType().Name, new List<int>()));
+			data.OperationNodes.Add(new LogicOperationNodeSaveData(node));
+		}
+		foreach (DisplayNode node in LogicComponents.OfType<DisplayNode>())
+		{
+			data.GenericNodes.Add(new LogicNodeSaveData(node));
 		}
 		File.WriteAllText(path, data.ToString());
+	}
+
+	public void LoadFromFile(string path)
+	{
+
 	}
 
 	private void CancelConnection()
