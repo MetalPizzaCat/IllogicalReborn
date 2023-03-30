@@ -38,6 +38,12 @@ public partial class ConstNode : LogicNode
         // there is no point in traversing upwards
         OutputConnector.Value = 0;
     }
+
+    public override void Load(LogicNodeSaveData data)
+    {
+        base.Load(data);
+        Value = (data.Value ?? false) ? 1u : 0u;
+    }
     // public override uint? Execute()
     // {
     // 	return 0;

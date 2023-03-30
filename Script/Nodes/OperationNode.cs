@@ -89,4 +89,10 @@ public partial class OperationNode : LogicNode
 	{
 		base._Ready();
 	}
+
+    public override void Load(LogicNodeSaveData data)
+    {
+        base.Load(data);
+		Operation = data.OperationType ?? OperationType.And;
+    }
 }

@@ -322,7 +322,7 @@ public partial class MainScene : Node
 
     public void NewFile()
     {
-		ClearCanvas();
+        ClearCanvas();
     }
 
     public void LoadFromFile(string path)
@@ -331,7 +331,9 @@ public partial class MainScene : Node
         {
 
             string saveFile = File.ReadAllText(path);
+            GD.Print(saveFile);
             SaveData? data = Newtonsoft.Json.JsonConvert.DeserializeObject<SaveData>(saveFile);
+
             if (data == null)
             {
                 GD.PrintErr("Unable to load save data");
@@ -347,15 +349,25 @@ public partial class MainScene : Node
                         {
                             continue;
                         }
-                        PackedScene scene = nodeData.OperationType == OperationNode.OperationType.Not ? OperationNotNodePrefab : OperationNodePrefab;
-                        AddLogicNode<OperationNode>(scene).Operation = nodeData.OperationType ?? OperationNode.OperationType.And;
+                        PackedScene? scene = nodeData.OperationType == OperationNode.OperationType.Not ? OperationNotNodePrefab : OperationNodePrefab;
+                        OperationNode? node = AddLogicNode<OperationNode>(scene);
+                        if (node == null)
+                        {
+                            continue;
+                        }
+                        node.Load(nodeData);
                     }
                 }
                 else if (type == typeof(ConstNode).ToString())
                 {
                     foreach (LogicNodeSaveData nodeData in nodes)
                     {
-                        AddLogicNode<ConstNode>(ConstNodePrefab).Value = nodeData.Value == null ? 0u : (nodeData.Value.Value ? 1u : 0u);
+                        ConstNode? node = AddLogicNode<ConstNode>(ConstNodePrefab);
+                        if (node == null)
+                        {
+                            continue;
+                        }
+                        node.Load(nodeData);
                     }
                 }
             }
@@ -372,7 +384,10 @@ public partial class MainScene : Node
         {
             GD.PrintErr($"Unable to read file at {path}. Error: {e.Message}");
         }
-
+        catch (Newtonsoft.Json.JsonSerializationException e)
+        {
+            GD.PrintErr($"Unable to parse file at {path}. Error: {e.Message}");
+        }
     }
 
     private void CancelConnection()

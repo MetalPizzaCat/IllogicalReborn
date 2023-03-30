@@ -27,6 +27,8 @@ public class LogicNodeSaveData
         }
     }
 
+    public LogicNodeSaveData() { }
+
     public LogicNodeSaveData(int id, Vector2 position, string className, Dictionary<int, List<int>> inputs, bool? value = null, OperationNode.OperationType? operationType = null)
     {
         Id = id;

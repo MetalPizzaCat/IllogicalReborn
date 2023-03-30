@@ -266,4 +266,10 @@ public partial class LogicNode : Node2D
             return new LogicNodeSaveData(Id, GlobalPosition, GetType().ToString(), inputs);
         }
     }
+
+    public virtual void Load(LogicNodeSaveData data)
+    {
+        GlobalPosition = data.Position;
+        Id = data.Id;
+    }
 }

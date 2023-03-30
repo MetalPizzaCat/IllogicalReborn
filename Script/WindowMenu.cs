@@ -9,9 +9,10 @@ public partial class WindowMenu : MenuBar
     public event NewFileRequestedEventHandler? OnNewFileRequested;
     protected enum FileMenuOptions
     {
-        New,
-        Save,
-        Exit
+        New = 0,
+        Save = 1,
+        Load = 3, 
+        Exit = 4
     }
 
     [Export]
@@ -19,6 +20,9 @@ public partial class WindowMenu : MenuBar
 
     [Export]
     public FileDialog? SaveFileDialog { get; set; }
+
+    [Export]
+    public FileDialog? OpenFileDialog { get; set; }
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -32,6 +36,7 @@ public partial class WindowMenu : MenuBar
 
     private void FileMenuPressed(long index)
     {
+        GD.Print(index);
         switch ((FileMenuOptions)index)
         {
             case FileMenuOptions.New:
@@ -40,7 +45,8 @@ public partial class WindowMenu : MenuBar
             case FileMenuOptions.Save:
                 SaveFileDialog?.Show();
                 break;
-            case FileMenuOptions.Exit:
+            case FileMenuOptions.Load:
+                OpenFileDialog?.Show();
                 break;
         }
     }

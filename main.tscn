@@ -75,15 +75,16 @@ color = Color(0, 0, 0, 0.384314)
 offset_left = 8.0
 offset_right = 8.0
 
-[node name="MenuBar" type="MenuBar" parent="CanvasLayer" node_paths=PackedStringArray("NodeScene", "SaveFileDialog")]
+[node name="MenuBar" type="MenuBar" parent="CanvasLayer" node_paths=PackedStringArray("NodeScene", "SaveFileDialog", "OpenFileDialog")]
 offset_right = 1152.0
 offset_bottom = 40.0
 script = ExtResource("2_36w7i")
 NodeScene = NodePath("../../MainScene")
 SaveFileDialog = NodePath("../../SaveFileDialog")
+OpenFileDialog = NodePath("../../LoadFileDialog")
 
 [node name="FileMenu" type="PopupMenu" parent="CanvasLayer/MenuBar"]
-item_count = 4
+item_count = 5
 item_0/text = "New"
 item_0/id = 0
 item_1/text = "Save"
@@ -91,8 +92,10 @@ item_1/id = 1
 item_2/text = ""
 item_2/id = 3
 item_2/separator = true
-item_3/text = "Exit"
-item_3/id = 2
+item_3/text = "Load"
+item_3/id = 4
+item_4/text = "Exit"
+item_4/id = 2
 
 [node name="AboutMenu" type="PopupMenu" parent="CanvasLayer/MenuBar"]
 
@@ -117,4 +120,4 @@ filters = PackedStringArray("*.boo")
 [connection signal="pressed" from="CanvasLayer/ColorRect/VBoxContainer/AddDisplay" to="MainScene" method="AddDisplayNode"]
 [connection signal="index_pressed" from="CanvasLayer/MenuBar/FileMenu" to="CanvasLayer/MenuBar" method="FileMenuPressed"]
 [connection signal="file_selected" from="SaveFileDialog" to="CanvasLayer/MenuBar" method="FileToSaveSelected"]
-[connection signal="file_selected" from="LoadFileDialog" to="CanvasLayer/MenuBar" method="FileToSaveSelected"]
+[connection signal="file_selected" from="LoadFileDialog" to="MainScene" method="LoadFromFile"]
