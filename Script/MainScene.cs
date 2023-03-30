@@ -325,11 +325,76 @@ public partial class MainScene : Node
         ClearCanvas();
     }
 
+    /// <summary>
+    /// Create nodes based on the information from data and initiate their values
+    /// </summary>
+    /// <param name="data">Data to load from</param>
+    private void LoadNodes(SaveData data)
+    {
+        foreach ((string type, List<LogicNodeSaveData> nodes) in data.Nodes)
+        {
+            if (type == typeof(OperationNode).ToString())
+            {
+                foreach (LogicNodeSaveData nodeData in nodes)
+                {
+                    if (nodeData.OperationType == null)
+                    {
+                        continue;
+                    }
+                    PackedScene? scene = nodeData.OperationType == OperationNode.OperationType.Not ? OperationNotNodePrefab : OperationNodePrefab;
+                    OperationNode? node = AddLogicNode<OperationNode>(scene);
+                    if (node == null)
+                    {
+                        continue;
+                    }
+                    node.Load(nodeData);
+                }
+            }
+            else if (type == typeof(ConstNode).ToString())
+            {
+                foreach (LogicNodeSaveData nodeData in nodes)
+                {
+                    ConstNode? node = AddLogicNode<ConstNode>(ConstNodePrefab);
+                    if (node == null)
+                    {
+                        continue;
+                    }
+                    node.Load(nodeData);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Load connections for nodes, this will both connect nodes and create wires
+    /// </summary>
+    /// <param name="data">Data to load from</param>
+    private void LoadConnections(SaveData data)
+    {
+        // we don't care about what type that node has we only need data itself
+        foreach (LogicNodeSaveData nodeData in data.Nodes.Values.SelectMany(x => x).ToList())
+        {
+            LogicNode? node = LogicComponents.FirstOrDefault(p => p.Id == nodeData.Id);
+            if (node == null)
+            {
+                GD.PrintErr($"Attempted to access node with id {nodeData.Id} to start connection but node not found");
+                continue;
+            }
+            foreach (int inputId in nodeData.Inputs.Keys)
+            {
+                LogicNode? otherNode = LogicComponents.FirstOrDefault(p => p.Id == nodeData.Id);
+                if (otherNode == null)
+                {
+                    continue;
+                }
+            }
+        }
+    }
+
     public void LoadFromFile(string path)
     {
         try
         {
-
             string saveFile = File.ReadAllText(path);
             GD.Print(saveFile);
             SaveData? data = Newtonsoft.Json.JsonConvert.DeserializeObject<SaveData>(saveFile);
@@ -339,38 +404,8 @@ public partial class MainScene : Node
                 GD.PrintErr("Unable to load save data");
                 return;
             }
-            foreach ((string type, List<LogicNodeSaveData> nodes) in data.Nodes)
-            {
-                if (type == typeof(OperationNode).ToString())
-                {
-                    foreach (LogicNodeSaveData nodeData in nodes)
-                    {
-                        if (nodeData.OperationType == null)
-                        {
-                            continue;
-                        }
-                        PackedScene? scene = nodeData.OperationType == OperationNode.OperationType.Not ? OperationNotNodePrefab : OperationNodePrefab;
-                        OperationNode? node = AddLogicNode<OperationNode>(scene);
-                        if (node == null)
-                        {
-                            continue;
-                        }
-                        node.Load(nodeData);
-                    }
-                }
-                else if (type == typeof(ConstNode).ToString())
-                {
-                    foreach (LogicNodeSaveData nodeData in nodes)
-                    {
-                        ConstNode? node = AddLogicNode<ConstNode>(ConstNodePrefab);
-                        if (node == null)
-                        {
-                            continue;
-                        }
-                        node.Load(nodeData);
-                    }
-                }
-            }
+            LoadNodes(data);
+            LoadConnections(data);
         }
         catch (FileNotFoundException e)
         {

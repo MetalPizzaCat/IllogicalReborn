@@ -9,24 +9,6 @@ using System.Collections.Generic;
 /// </summary>
 public class LogicNodeSaveData
 {
-    public LogicNodeSaveData(LogicNode node)
-    {
-        Id = node.Id;
-        Position = node.GlobalPosition;
-        ClassName = node.GetType().ToString();
-        foreach (Connector conn in node.Inputs)
-        {
-            if (conn.Connection == null)
-            {
-                continue;
-            }
-            if (!Inputs.TryAdd(conn.Connection.ParentNode.Id, new List<int> { conn.Connection.Id }))
-            {
-                Inputs[conn.Connection.ParentNode.Id].Add(conn.Connection.Id);
-            }
-        }
-    }
-
     public LogicNodeSaveData() { }
 
     public LogicNodeSaveData(int id, Vector2 position, string className, Dictionary<int, List<int>> inputs, bool? value = null, OperationNode.OperationType? operationType = null)
