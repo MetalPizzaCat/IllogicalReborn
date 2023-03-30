@@ -7,10 +7,10 @@ using System.Linq;
 /// </summary>
 public partial class ConstNode : LogicNode
 {
-	private UInt32 _value = 0;
+	private bool _value = false;
 
 	[Export]
-	public UInt32 Value
+	public bool Value
 	{
 		get => _value;
 		set
@@ -28,7 +28,7 @@ public partial class ConstNode : LogicNode
 		get
 		{
 			LogicNodeSaveData data = base.SaveData;
-			data.Value = Value == 0; // TODO: replace value type with bool to revert back to original idea
+			data.Value = Value; 
 			return data;
 		}
 	}
@@ -36,16 +36,12 @@ public partial class ConstNode : LogicNode
 	public override void Simulate()
 	{
 		// there is no point in traversing upwards
-		OutputConnector.Value = 0;
+		OutputConnector.Value = Value;
 	}
 
 	public override void Load(LogicNodeSaveData data)
 	{
 		base.Load(data);
-		Value = (data.Value ?? false) ? 1u : 0u;
+		Value = (data.Value ?? false);
 	}
-	// public override uint? Execute()
-	// {
-	// 	return 0;
-	// }
 }

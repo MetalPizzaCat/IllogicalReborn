@@ -15,7 +15,7 @@ public partial class DisplayNode : LogicNode
 
     public void Display()
     {
-        UInt32? data = Inputs.FirstOrDefault()?.Value;
+        bool? data = Inputs.FirstOrDefault()?.Value;
         DisplayLabel.Text = data?.ToString() ?? "Invalid";
     }
 

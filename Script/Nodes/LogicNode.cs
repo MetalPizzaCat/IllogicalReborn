@@ -51,25 +51,6 @@ public partial class LogicNode : Node2D
 	[Export]
 	public int OutputSize { get; set; } = 1;
 
-	private int _dataSize = 1;
-	public UInt32 DataMask { get; set; } = 1;
-
-	[Export]
-	public int DataSize
-	{
-		get => _dataSize;
-		set
-		{
-			_dataSize = value;
-			DataMask = 0;
-			for (int i = 0; i < value; i++)
-			{
-				DataMask |= (1u << i);
-			}
-			NotifyConnectorsAboutSizeChange();
-		}
-	}
-
 	private bool _isSelected = false;
 
 	public bool IsSelected
@@ -161,19 +142,6 @@ public partial class LogicNode : Node2D
 			con.ParentNode = this;
 			con.Id = i;
 		}
-	}
-
-	/// <summary>
-	/// Makes every connector object that is child to this node check if data sizes are valid and raise events accordingly
-	/// </summary>
-	public void NotifyConnectorsAboutSizeChange()
-	{
-		GD.Print($"{DisplayName} changed size to {DataSize}");
-		foreach (Connector connector in Inputs)
-		{
-			connector.NotifyConnectedNodesAboutSizeChange();
-		}
-		OutputConnector?.NotifyConnectedNodesAboutSizeChange();
 	}
 
 	/// <summary>
