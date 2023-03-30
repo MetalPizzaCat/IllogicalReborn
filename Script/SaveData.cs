@@ -5,11 +5,7 @@ using System.Collections.Generic;
 public class SaveData
 {
     public int CurrentId { get; set; } = 0;
-    public List<LogicNodeSaveData> OperationNodes { get; set; } = new();
-
-    public List<LogicNodeSaveData> ConstNodes { get; set; } = new();
-
-    public List<LogicNodeSaveData> GenericNodes { get; set; } = new();
+    public Dictionary<string, List<LogicNodeSaveData>> Nodes { get; set; } = new();
 
     public override string ToString()
     {

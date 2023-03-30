@@ -4,6 +4,9 @@ using System;
 
 public partial class WindowMenu : MenuBar
 {
+    public delegate void NewFileRequestedEventHandler();
+
+    public event NewFileRequestedEventHandler? OnNewFileRequested;
     protected enum FileMenuOptions
     {
         New,
@@ -32,6 +35,7 @@ public partial class WindowMenu : MenuBar
         switch ((FileMenuOptions)index)
         {
             case FileMenuOptions.New:
+                OnNewFileRequested?.Invoke();
                 break;
             case FileMenuOptions.Save:
                 SaveFileDialog?.Show();
@@ -40,11 +44,11 @@ public partial class WindowMenu : MenuBar
                 break;
         }
     }
-	
+
     private void FileToSaveSelected(string path)
     {
         GD.Print($"File to save: {path}");
-		NodeScene?.SaveToFile(path);
+        NodeScene?.SaveToFile(path);
     }
 }
 

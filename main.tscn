@@ -14,8 +14,9 @@ grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_horizontal_guides_ = []
 
-[node name="MainScene" parent="." node_paths=PackedStringArray("ContextMenu") instance=ExtResource("1_62umj")]
+[node name="MainScene" parent="." node_paths=PackedStringArray("ContextMenu", "Menu") instance=ExtResource("1_62umj")]
 ContextMenu = NodePath("../CanvasLayer/NodeContextMenu")
+Menu = NodePath("../CanvasLayer/MenuBar")
 ConstNodePrefab = ExtResource("2_ik7h8")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -100,6 +101,14 @@ size = Vector2i(632, 500)
 access = 2
 filters = PackedStringArray("*.boo")
 
+[node name="LoadFileDialog" type="FileDialog" parent="."]
+title = "Open a File"
+size = Vector2i(632, 500)
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.boo")
+
 [connection signal="pressed" from="CanvasLayer/ColorRect/VBoxContainer/AddAnd" to="MainScene" method="AddLogicNodeAnd"]
 [connection signal="pressed" from="CanvasLayer/ColorRect/VBoxContainer/AddOr" to="MainScene" method="AddLogicNodeOr"]
 [connection signal="pressed" from="CanvasLayer/ColorRect/VBoxContainer/AddXor" to="MainScene" method="AddLogicNodeXor"]
@@ -108,3 +117,4 @@ filters = PackedStringArray("*.boo")
 [connection signal="pressed" from="CanvasLayer/ColorRect/VBoxContainer/AddDisplay" to="MainScene" method="AddDisplayNode"]
 [connection signal="index_pressed" from="CanvasLayer/MenuBar/FileMenu" to="CanvasLayer/MenuBar" method="FileMenuPressed"]
 [connection signal="file_selected" from="SaveFileDialog" to="CanvasLayer/MenuBar" method="FileToSaveSelected"]
+[connection signal="file_selected" from="LoadFileDialog" to="CanvasLayer/MenuBar" method="FileToSaveSelected"]

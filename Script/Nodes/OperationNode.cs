@@ -27,6 +27,17 @@ public partial class OperationNode : LogicNode
 			}
 		}
 	}
+
+	public override LogicNodeSaveData SaveData
+	{
+		get
+		{
+			LogicNodeSaveData data = base.SaveData;
+			data.OperationType = _type;
+			return data;
+		}
+	}
+	
 	public UInt32? CurrentValue => Inputs.FirstOrDefault()?.Value;
 
 	public override string DisplayName => $"{Operation.ToString()} gate";
