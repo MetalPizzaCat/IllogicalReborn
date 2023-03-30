@@ -443,6 +443,7 @@ public partial class MainScene : Node
 			}
 			LoadNodes(data);
 			LoadConnections(data);
+			Simulate();
 		}
 		catch (FileNotFoundException e)
 		{
