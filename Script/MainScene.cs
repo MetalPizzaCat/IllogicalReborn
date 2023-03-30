@@ -241,7 +241,7 @@ public partial class MainScene : Node
 		ConnectionLinePreview.Visible = false;
 		GetWindow().Title = AppTitle;
 
-		CanvasControl.OnSelectionBegun += (Vector2 loc) => { _currentSelectionBoxStart = CurrentPointerPosition; IsSelecting = true; };
+		CanvasControl.OnSelectionBegun += StartSelection;
 		CanvasControl.OnSelectionEnded += FinishSelection;
 
 		if (Menu != null)
@@ -249,6 +249,13 @@ public partial class MainScene : Node
 			Menu.OnNewFileRequested += NewFile;
 
 		}
+	}
+
+	public void StartSelection(Vector2 location)
+	{
+		GD.Print("We do be selecting doe");
+		_currentSelectionBoxStart = CurrentPointerPosition;
+		IsSelecting = true;
 	}
 
 	public void FinishSelection()
@@ -557,6 +564,7 @@ public partial class MainScene : Node
 		}
 		Wires.Where(p => p.Source == node.OutputConnector || p.Destination == node.OutputConnector).ToList().ForEach(p => p.QueueFree());
 		Wires.RemoveAll(p => p.Source == node.OutputConnector || p.Destination == node.OutputConnector);
+		LogicComponents.Remove(node);
 		Simulate();
 	}
 
@@ -628,7 +636,6 @@ public partial class MainScene : Node
 				endNodes.Add(node);
 			}
 		}
-		GD.Print($"Ahooga: {endNodes.Count}");
 		// make every node calculate values
 		foreach (LogicNode node in endNodes)
 		{

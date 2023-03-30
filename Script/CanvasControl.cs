@@ -22,6 +22,12 @@ public partial class CanvasControl : Control
         {
             MousePosition = mouseMotion.Position - Size / 2f;
         }
+
+    }
+
+    public override void _GuiInput(InputEvent @event)
+    {
+        base._GuiInput(@event);
         if (@event is InputEventMouseButton && Input.IsActionJustPressed("pointer_press"))
         {
             GD.Print("Start");

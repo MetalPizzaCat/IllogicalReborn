@@ -22,7 +22,6 @@ public partial class DisplayNode : LogicNode
     public override void Simulate()
     {
         base.Simulate();
-        GD.Print($"Disp val: {Inputs.FirstOrDefault()?.Value}");
         OutputConnector.Value = Inputs.FirstOrDefault()?.Value;
     }
 
