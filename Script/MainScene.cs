@@ -380,14 +380,6 @@ public partial class MainScene : Node
                 GD.PrintErr($"Attempted to access node with id {nodeData.Id} to start connection but node not found");
                 continue;
             }
-            foreach (int inputId in nodeData.Inputs.Keys)
-            {
-                LogicNode? otherNode = LogicComponents.FirstOrDefault(p => p.Id == nodeData.Id);
-                if (otherNode == null)
-                {
-                    continue;
-                }
-            }
         }
     }
 

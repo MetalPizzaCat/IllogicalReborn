@@ -11,7 +11,7 @@ public class LogicNodeSaveData
 {
     public LogicNodeSaveData() { }
 
-    public LogicNodeSaveData(int id, Vector2 position, string className, Dictionary<int, List<int>> inputs, bool? value = null, OperationNode.OperationType? operationType = null)
+    public LogicNodeSaveData(int id, Vector2 position, string className, List<Dictionary<int, List<int>>> inputs, bool? value = null, OperationNode.OperationType? operationType = null)
     {
         Id = id;
         Position = position;
@@ -37,7 +37,7 @@ public class LogicNodeSaveData
     /// </summary>
     public OperationNode.OperationType? OperationType { get; set; } = null;
 
-    public Dictionary<int, List<int>> Inputs { get; set; } = new();
+    public List<Dictionary<int, List<int>>> Inputs { get; set; } = new();
 
     public override string ToString()
     {

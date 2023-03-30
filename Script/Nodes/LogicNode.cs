@@ -251,9 +251,10 @@ public partial class LogicNode : Node2D
     {
         get
         {
-            Dictionary<int, List<int>> inputs = new();
+            List<Dictionary<int, List<int>>> resultInputs = new();
             foreach (Connector conn in Inputs)
             {
+                Dictionary<int, List<int>> inputs = new(); 
                 if (conn.Connection == null || conn.Connection.ParentNode == null)
                 {
                     continue;
@@ -262,8 +263,9 @@ public partial class LogicNode : Node2D
                 {
                     inputs[conn.Connection.ParentNode.Id].Add(conn.Connection.Id);
                 }
+                resultInputs.Add(inputs);
             }
-            return new LogicNodeSaveData(Id, GlobalPosition, GetType().ToString(), inputs);
+            return new LogicNodeSaveData(Id, GlobalPosition, GetType().ToString(), resultInputs);
         }
     }
 
