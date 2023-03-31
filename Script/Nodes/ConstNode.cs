@@ -23,6 +23,8 @@ public partial class ConstNode : LogicNode
 		}
 	}
 
+	public override string Formula => _value ? "1" : "0";
+
 	public override LogicNodeSaveData SaveData
 	{
 		get

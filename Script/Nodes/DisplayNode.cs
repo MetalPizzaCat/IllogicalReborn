@@ -13,6 +13,8 @@ public partial class DisplayNode : LogicNode
         Display();
     }
 
+    public override string Formula => InputNodes.FirstOrDefault()?.Formula ?? "INVALID!";
+
     public void Display()
     {
         bool? data = Inputs.FirstOrDefault()?.Value;
