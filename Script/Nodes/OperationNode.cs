@@ -37,8 +37,8 @@ public partial class OperationNode : LogicNode
 			return data;
 		}
 	}
-	
-	public UInt32? CurrentValue => Inputs.FirstOrDefault()?.Value;
+
+	public bool? CurrentValue => Inputs.FirstOrDefault()?.Value;
 
 	public override string DisplayName => $"{Operation.ToString()} gate";
 
@@ -49,11 +49,11 @@ public partial class OperationNode : LogicNode
 		if (Operation == OperationType.Not)
 		{
 			// Operation node can only have one output, which is the result
-			OutputConnector.Value = (CurrentValue == null ? null : (~CurrentValue) & (DataMask));
+			OutputConnector.Value = (CurrentValue == null ? null : (!CurrentValue));
 			return;
 		}
 		// Grab first node instead of picking default value because best default value depends on the operation
-		UInt32? result = CurrentValue;
+		bool? result = CurrentValue;
 		if (result == null)
 		{
 			OutputConnector.Value = null;
@@ -61,9 +61,9 @@ public partial class OperationNode : LogicNode
 		}
 		foreach (Connector con in Inputs.Skip(1))
 		{
-			UInt32? connValue = con.Connection?.Value;
+			bool? connValue = con.Connection?.Value;
 			// Option or Err from rust would come in really handy right about now
-			if (connValue == null || con.Connection?.DataSize != DataSize)
+			if (connValue == null)
 			{
 				// if ANY node returns null we abort whole chain as it means there is an error
 				OutputConnector.Value = null;

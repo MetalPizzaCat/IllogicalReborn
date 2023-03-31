@@ -31,12 +31,6 @@ public partial class Connector : Node2D
 	[Export]
 	public int Id { get; set; } = 0;
 
-	/// <summary>
-	/// Which data size does this connector use. Taken from parent node<para/>
-	/// If parent node is null then 0 will be returned
-	/// </summary>
-	public int DataSize => ParentNode?.DataSize ?? 0;
-
 	private List<Connector> _connections = new List<Connector>();
 
 	/// <summary>
@@ -54,12 +48,12 @@ public partial class Connector : Node2D
 	public bool CanFitMoreConnections => IsOutput || _connections.Count == 0 || _connections[0] == null;
 	public LogicNode? ParentNode { get; set; } = null;
 
-	private UInt32? _value = null;
+	private bool? _value = null;
 	/// <summary>
 	/// Current value in this node
 	/// </summary>
 	/// <value></value>
-	public UInt32? Value
+	public bool? Value
 	{
 		// because inputs only have to propagate the value that they are connected to
 		get => IsOutput ? _value : Connection?.Value;
@@ -71,21 +65,6 @@ public partial class Connector : Node2D
 	}
 
 	private bool _hasIncompatibleConnection = false;
-
-	/// <summary>
-	/// True if any of the connected nodes have data size different from current data size
-	/// </summary>
-	/// <value></value>
-	public bool HasIncompatibleConnection
-	{
-		get => _hasIncompatibleConnection;
-		set
-		{
-			_hasIncompatibleConnection = value;
-			DataSizeLabel.Visible = value;
-			DataSizeLabel.Text = DataSize.ToString();
-		}
-	}
 
 	private void Select()
 	{
@@ -118,7 +97,6 @@ public partial class Connector : Node2D
 				_connections[0] = other;
 			}
 		}
-		NotifyConnectedNodesAboutSizeChange();
 	}
 
 	/// <summary>
@@ -174,16 +152,5 @@ public partial class Connector : Node2D
 			OnConnectionRemoved?.Invoke(this, conn);
 		}
 		_connections.Clear();
-	}
-
-	public void NotifyConnectedNodesAboutSizeChange()
-	{
-		HasIncompatibleConnection = true;
-		foreach (Connector other in Connections)
-		{
-			// Notify whoever is listening that computation can not proceed
-			OnConnectionSizeUpdated?.Invoke(this, other, other.DataSize == DataSize);
-			HasIncompatibleConnection &= other.DataSize == DataSize;
-		}
 	}
 }

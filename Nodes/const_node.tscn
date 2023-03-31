@@ -5,5 +5,5 @@
 
 [node name="ConstNode" instance=ExtResource("1_tdj17")]
 script = ExtResource("2_av23p")
-Value = 0
+Value = false
 InputSize = 0
