@@ -5,18 +5,18 @@ using System;
 public partial class NodeContextMenu : Control
 {
 
-    [Export]
-    public Label? DisplayNameLabel { get; set; }
+	[Export]
+	public Label? DisplayNameLabel { get; set; }
 
-    private LogicNode? _currentNode = null;
+	private LogicNode? _currentNode = null;
 
-    public LogicNode? CurrentNode
-    {
-        get => _currentNode;
-        set
-        {
-            _currentNode = null;
-            _currentNode = value;
-        }
-    }
+	public LogicNode? CurrentNode
+	{
+		get => _currentNode;
+		set
+		{
+			_currentNode = null;
+			_currentNode = value;
+		}
+	}
 }

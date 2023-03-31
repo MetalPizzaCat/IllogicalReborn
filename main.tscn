@@ -1,8 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://dcq8kej6a3fjm"]
+[gd_scene load_steps=7 format=3 uid="uid://dcq8kej6a3fjm"]
 
 [ext_resource type="PackedScene" uid="uid://6w3butyni4vy" path="res://MainScene.tscn" id="1_62umj"]
 [ext_resource type="Script" path="res://Script/WindowMenu.cs" id="2_36w7i"]
 [ext_resource type="PackedScene" uid="uid://c6ygkydyym4ul" path="res://Nodes/const_node.tscn" id="2_ik7h8"]
+[ext_resource type="PackedScene" uid="uid://ddydpl7psmopm" path="res://Nodes/variable_node.tscn" id="3_3cw5x"]
+[ext_resource type="PackedScene" uid="uid://rbosu6442iof" path="res://Nodes/output_node.tscn" id="4_jnln2"]
 [ext_resource type="PackedScene" uid="uid://bsvm534jowf24" path="res://node_context_menu.tscn" id="4_t8ffv"]
 
 [node name="Main" type="Control"]
@@ -18,6 +20,8 @@ metadata/_edit_horizontal_guides_ = []
 ContextMenu = NodePath("../CanvasLayer/NodeContextMenu")
 Menu = NodePath("../CanvasLayer/MenuBar")
 ConstNodePrefab = ExtResource("2_ik7h8")
+InputNodePrefab = ExtResource("3_3cw5x")
+OutputNodePrefab = ExtResource("4_jnln2")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = 2
@@ -61,6 +65,15 @@ text = "Constant"
 [node name="AddDisplay" type="Button" parent="CanvasLayer/ColorRect/VBoxContainer"]
 layout_mode = 2
 text = "Display"
+
+[node name="AddInput" type="Button" parent="CanvasLayer/ColorRect/VBoxContainer"]
+layout_mode = 2
+text = "Variable
+"
+
+[node name="AddOutput" type="Button" parent="CanvasLayer/ColorRect/VBoxContainer"]
+layout_mode = 2
+text = "Output"
 
 [node name="ColorRect2" type="ColorRect" parent="CanvasLayer"]
 anchors_preset = -1
@@ -118,6 +131,8 @@ filters = PackedStringArray("*.boo")
 [connection signal="pressed" from="CanvasLayer/ColorRect/VBoxContainer/AddNot" to="MainScene" method="AddLogicNodeNot"]
 [connection signal="pressed" from="CanvasLayer/ColorRect/VBoxContainer/AddConst" to="MainScene" method="AddLogicNodeConst"]
 [connection signal="pressed" from="CanvasLayer/ColorRect/VBoxContainer/AddDisplay" to="MainScene" method="AddDisplayNode"]
+[connection signal="pressed" from="CanvasLayer/ColorRect/VBoxContainer/AddInput" to="MainScene" method="AddVariableNode"]
+[connection signal="pressed" from="CanvasLayer/ColorRect/VBoxContainer/AddOutput" to="MainScene" method="AddOutputNode"]
 [connection signal="index_pressed" from="CanvasLayer/MenuBar/FileMenu" to="CanvasLayer/MenuBar" method="FileMenuPressed"]
 [connection signal="file_selected" from="SaveFileDialog" to="CanvasLayer/MenuBar" method="FileToSaveSelected"]
 [connection signal="file_selected" from="LoadFileDialog" to="MainScene" method="LoadFromFile"]

@@ -52,6 +52,12 @@ public partial class MainScene : Node
 	public PackedScene? ConstNodePrefab { get; set; } = null;
 
 	[Export]
+	public PackedScene? InputNodePrefab { get; set; } = null;
+
+	[Export]
+	public PackedScene? OutputNodePrefab { get; set; } = null;
+
+	[Export]
 	public ColorRect? SelectionBox { get; set; } = null;
 
 	/// <summary>
@@ -622,6 +628,18 @@ public partial class MainScene : Node
 	private void AddLogicNodeConst()
 	{
 		AddLogicNode<ConstNode>(ConstNodePrefab);
+		Simulate();
+	}
+
+	private void AddVariableNode()
+	{
+		AddLogicNode<InputNode>(InputNodePrefab);
+		Simulate();
+	}
+
+	private void AddOutputNode()
+	{
+		AddLogicNode<OutputNode>(OutputNodePrefab);
 		Simulate();
 	}
 

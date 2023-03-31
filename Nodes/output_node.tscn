@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://rbosu6442iof"]
+
+[ext_resource type="PackedScene" uid="uid://cxn1fucweqvo2" path="res://Nodes/LogicNode.tscn" id="1_4sdys"]
+[ext_resource type="Script" path="res://Script/Nodes/OutputNode.cs" id="2_p1yrx"]
+
+[node name="OutputNode" instance=ExtResource("1_4sdys")]
+script = ExtResource("2_p1yrx")
+InputSize = 1
+OutputSize = 0
