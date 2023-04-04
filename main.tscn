@@ -1,19 +1,25 @@
-[gd_scene load_steps=7 format=3 uid="uid://dcq8kej6a3fjm"]
+[gd_scene load_steps=9 format=3 uid="uid://dcq8kej6a3fjm"]
 
 [ext_resource type="PackedScene" uid="uid://6w3butyni4vy" path="res://MainScene.tscn" id="1_62umj"]
+[ext_resource type="Script" path="res://Script/MainControl.cs" id="1_o6up7"]
 [ext_resource type="Script" path="res://Script/WindowMenu.cs" id="2_36w7i"]
 [ext_resource type="PackedScene" uid="uid://c6ygkydyym4ul" path="res://Nodes/const_node.tscn" id="2_ik7h8"]
 [ext_resource type="PackedScene" uid="uid://ddydpl7psmopm" path="res://Nodes/variable_node.tscn" id="3_3cw5x"]
 [ext_resource type="PackedScene" uid="uid://rbosu6442iof" path="res://Nodes/output_node.tscn" id="4_jnln2"]
 [ext_resource type="PackedScene" uid="uid://bsvm534jowf24" path="res://node_context_menu.tscn" id="4_t8ffv"]
+[ext_resource type="PackedScene" uid="uid://d3p1pfh2on7pl" path="res://variable_value_control.tscn" id="5_du51w"]
 
-[node name="Main" type="Control"]
+[node name="Main" type="Control" node_paths=PackedStringArray("VariableButtonList", "MainScene")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_o6up7")
+VariableButtonList = NodePath("CanvasLayer/ColorRect3/ScrollContainer/VBoxContainer")
+VariableButtonPrefab = ExtResource("5_du51w")
+MainScene = NodePath("MainScene")
 metadata/_edit_horizontal_guides_ = []
 
 [node name="MainScene" parent="." node_paths=PackedStringArray("ContextMenu", "Menu") instance=ExtResource("1_62umj")]
@@ -83,6 +89,42 @@ offset_right = 896.256
 offset_bottom = -616.0
 mouse_filter = 2
 color = Color(0, 0, 0, 0.384314)
+
+[node name="ColorRect3" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = -1
+anchor_right = 0.222
+anchor_bottom = 1.0
+offset_left = 1024.0
+offset_top = 32.0
+offset_right = 896.256
+mouse_filter = 2
+color = Color(0, 0, 0, 0.384314)
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/ColorRect3"]
+layout_mode = 2
+offset_right = 128.0
+offset_bottom = 26.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/ColorRect3/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/ColorRect3/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+text = "Name"
+
+[node name="Label2" type="Label" parent="CanvasLayer/ColorRect3/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+text = "Value"
+horizontal_alignment = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/ColorRect3"]
+layout_mode = 2
+offset_top = 30.0
+offset_right = 128.0
+offset_bottom = 544.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/ColorRect3/ScrollContainer"]
+layout_mode = 2
 
 [node name="NodeContextMenu" parent="CanvasLayer" instance=ExtResource("4_t8ffv")]
 offset_left = 8.0
