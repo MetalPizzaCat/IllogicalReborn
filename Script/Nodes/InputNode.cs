@@ -11,6 +11,8 @@ public partial class InputNode : LogicNode
 
     public override string Formula => VariableName.ToString();
 
+    public override string DisplayName => $"Variable";
+
     public override void Simulate()
     {
         // there is no point in traversing upwards

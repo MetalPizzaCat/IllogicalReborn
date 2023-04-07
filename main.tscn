@@ -78,6 +78,7 @@ text = "Variable
 "
 
 [node name="AddOutput" type="Button" parent="CanvasLayer/ColorRect/VBoxContainer"]
+visible = false
 layout_mode = 2
 text = "Output"
 
@@ -127,6 +128,7 @@ offset_bottom = 544.0
 layout_mode = 2
 
 [node name="NodeContextMenu" parent="CanvasLayer" instance=ExtResource("4_t8ffv")]
+visible = false
 offset_left = 8.0
 offset_right = 8.0
 

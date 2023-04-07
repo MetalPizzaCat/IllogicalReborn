@@ -25,9 +25,14 @@ public partial class NodeContextMenu : Control
 		set
 		{
 			_currentNode = value;
-			if (FormulaLabel != null && value != null)
+			Visible = value != null;
+			if (DisplayNameLabel != null)
 			{
-				FormulaLabel.Text = value.Formula;
+				DisplayNameLabel.Text = value?.DisplayName ?? string.Empty;
+			}
+			if (FormulaLabel != null)
+			{
+				FormulaLabel.Text = value?.Formula ?? string.Empty;
 			}
 			if (VariableNameControlNode != null && VariableNameOptionButton != null && value is InputNode input)
 			{

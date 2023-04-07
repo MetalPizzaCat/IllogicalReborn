@@ -373,12 +373,11 @@ public partial class MainScene : Node
                 }
                 else if (type == typeof(DisplayNode).ToString())
                 {
-                    DisplayNode? node = AddLogicNode<DisplayNode>(DisplayNodePrefab);
-                    if (node == null)
-                    {
-                        continue;
-                    }
-                    node.Load(nodeData);
+                    AddLogicNode<DisplayNode>(DisplayNodePrefab)?.Load(nodeData);
+                }
+                else if (type == typeof(InputNode).ToString())
+                {
+                    AddLogicNode<InputNode>(InputNodePrefab)?.Load(nodeData);
                 }
             }
         }
@@ -668,6 +667,6 @@ public partial class MainScene : Node
         {
             node.Value = value;
         }
-		Simulate();
+        Simulate();
     }
 }
