@@ -22,7 +22,8 @@ VariableButtonPrefab = ExtResource("5_du51w")
 MainScene = NodePath("MainScene")
 metadata/_edit_horizontal_guides_ = []
 
-[node name="MainScene" parent="." node_paths=PackedStringArray("ContextMenu", "Menu") instance=ExtResource("1_62umj")]
+[node name="MainScene" parent="." node_paths=PackedStringArray("MainControl", "ContextMenu", "Menu") instance=ExtResource("1_62umj")]
+MainControl = NodePath("..")
 ContextMenu = NodePath("../CanvasLayer/NodeContextMenu")
 Menu = NodePath("../CanvasLayer/MenuBar")
 ConstNodePrefab = ExtResource("2_ik7h8")

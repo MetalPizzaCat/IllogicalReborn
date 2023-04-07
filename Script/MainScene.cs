@@ -11,6 +11,9 @@ public partial class MainScene : Node
     public string AppTitle { get; set; } = "Illogical Reborn";
 
     [Export]
+    public MainControl? MainControl { get; set; } = null;
+
+    [Export]
     public CanvasControl? CanvasControl { get; set; } = null;
 
     [Export]
@@ -262,7 +265,11 @@ public partial class MainScene : Node
 
         CanvasControl.OnSelectionBegun += StartSelection;
         CanvasControl.OnSelectionEnded += FinishSelection;
-
+        if (ContextMenu != null)
+        {
+            //we don't care about the specific button we just care about display itself
+            ContextMenu.OnVariableNameChanged += (char name, InputNode node) => { UpdateVariableDisplay(); };
+        }
         if (Menu != null)
         {
             Menu.OnNewFileRequested += NewFile;
@@ -270,9 +277,18 @@ public partial class MainScene : Node
         }
     }
 
+    public void UpdateVariableDisplay()
+    {
+        List<char> variables = new();
+        foreach (InputNode node in LogicComponents.OfType<InputNode>())
+        {
+            variables.Add(node.VariableName);
+        }
+        MainControl?.DisplayVariableButtons(variables);
+    }
+
     public void StartSelection(Vector2 location)
     {
-        GD.Print("We do be selecting doe");
         _currentSelectionBoxStart = CurrentPointerPosition;
         IsSelecting = true;
     }
@@ -584,6 +600,15 @@ public partial class MainScene : Node
         Wires.Where(p => p.Source == node.OutputConnector || p.Destination == node.OutputConnector).ToList().ForEach(p => p.QueueFree());
         Wires.RemoveAll(p => p.Source == node.OutputConnector || p.Destination == node.OutputConnector);
         LogicComponents.Remove(node);
+        UpdateVariableDisplay();
+        if (ContextMenu != null && ContextMenu.CurrentNode == node)
+        {
+            ContextMenu.CurrentNode = null;
+        }
+        if(_currentlySelectedConnector != null && _currentlySelectedConnector.ParentNode == node)
+        {
+            CancelConnection();
+        }
         Simulate();
     }
 
@@ -646,6 +671,7 @@ public partial class MainScene : Node
     private void AddVariableNode()
     {
         AddLogicNode<InputNode>(InputNodePrefab);
+        UpdateVariableDisplay();
         Simulate();
     }
 

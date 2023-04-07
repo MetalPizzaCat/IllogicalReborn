@@ -37,6 +37,7 @@ text = "Formula: "
 layout_mode = 2
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
+visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3"]

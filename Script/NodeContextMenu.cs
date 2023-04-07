@@ -5,6 +5,9 @@ using System;
 public partial class NodeContextMenu : Control
 {
 
+	public delegate void VariableNameChangedEventHandler(char name, InputNode button);
+	public event VariableNameChangedEventHandler? OnVariableNameChanged;
+
 	[Export]
 	public Label? DisplayNameLabel { get; set; }
 
@@ -39,6 +42,10 @@ public partial class NodeContextMenu : Control
 				VariableNameControlNode.Visible = VariableNameControlNode != null;
 				VariableNameOptionButton.Selected = input.VariableName - 'a';
 			}
+			else if (VariableNameControlNode != null)
+			{
+				VariableNameControlNode.Visible = value is InputNode;
+			}
 		}
 	}
 
@@ -59,6 +66,7 @@ public partial class NodeContextMenu : Control
 		if (_currentNode is InputNode input)
 		{
 			input.VariableName = ((char)((char)index + 'a'));
+			OnVariableNameChanged?.Invoke(input.VariableName, input);
 		}
 	}
 }
