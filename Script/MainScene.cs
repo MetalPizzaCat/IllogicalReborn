@@ -90,7 +90,20 @@ public partial class MainScene : Node
     /// <summary>
     /// Current camera zoom or (1,1) if not camera is present
     /// </summary>
-    public Vector2 CurrentZoom => CurrentCamera?.Zoom ?? Vector2.One;
+    public Vector2 CurrentZoom
+    {
+        get => CurrentCamera?.Zoom ?? Vector2.One;
+        set
+        {
+            // In godot zoom can not be less then 0
+            // and there is no point in having it be larger then 1
+            if (value.X == 0 || value.Y == 0 || CurrentCamera == null || value.X > 1 || value.Y > 1)
+            {
+                return;
+            }
+            CurrentCamera.Zoom = value;
+        }
+    }
 
     /// <summary>
     /// Current mouse location with offset, zoom and viewport adjustments applied
@@ -164,11 +177,11 @@ public partial class MainScene : Node
         {
             if (Input.IsActionJustPressed("zoom_in"))
             {
-                CurrentCamera.Zoom += new Vector2(ZoomStep, ZoomStep);
+                CurrentZoom += new Vector2(ZoomStep, ZoomStep);
             }
             if (Input.IsActionJustPressed("zoom_out"))
             {
-                CurrentCamera.Zoom -= new Vector2(ZoomStep, ZoomStep);
+                CurrentZoom -= new Vector2(ZoomStep, ZoomStep);
             }
         }
         if (Input.IsActionJustPressed("Cancel"))
