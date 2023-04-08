@@ -7,3 +7,8 @@
 script = ExtResource("2_d816i")
 VariableName = 120
 InputSize = 0
+
+[node name="NameLabel" parent="." index="7"]
+offset_left = -16.0
+offset_right = 24.0
+text = "X"

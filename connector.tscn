@@ -28,6 +28,7 @@ offset_bottom = 10.0
 text = "1"
 
 [node name="DEBUG_InfoLabel" type="Label" parent="."]
+visible = false
 modulate = Color(1, 0.0156863, 0, 1)
 offset_top = -16.0
 offset_right = 144.0

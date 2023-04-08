@@ -4,14 +4,29 @@ using System.Linq;
 
 public partial class InputNode : LogicNode
 {
+	private char _variableName = 'x';
+
 	[Export]
-	public char VariableName { get; set; } = 'x';
+	public char VariableName
+	{
+		get => _variableName;
+		set
+		{
+			_variableName = value;
+			if (NameLabel != null)
+			{
+				NameLabel.Text = Symbol;
+			}
+		}
+	}
 
 	public bool Value { get; set; } = false;
 
 	public override string Formula => VariableName.ToString();
 
 	public override string DisplayName => $"Variable";
+
+	public override string Symbol => VariableName.ToString();
 
 	public override void Simulate()
 	{

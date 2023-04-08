@@ -23,7 +23,7 @@ public partial class OperationNode : LogicNode
 			_type = value;
 			if (NameLabel != null)
 			{
-				NameLabel.Text = Operation.ToString();
+				NameLabel.Text = Symbol;
 			}
 		}
 	}
@@ -62,6 +62,26 @@ public partial class OperationNode : LogicNode
 			return $"({InputNodes.ElementAtOrDefault(0)?.Formula ?? "INVALID!"}) {operation} ({InputNodes.ElementAtOrDefault(1)?.Formula ?? "INVALID!"})";
 		}
 	}
+
+	public override string Symbol
+	{
+		get
+		{
+			switch (Operation)
+			{
+				case OperationType.And:
+					return "&";
+				case OperationType.Or:
+					return "≥1";
+				case OperationType.Not:
+					return "1";
+				case OperationType.Xor:
+					return "=1";
+			}
+			return "1";
+		}
+	}
+
 
 	public override void Simulate()
 	{

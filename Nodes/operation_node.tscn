@@ -7,6 +7,9 @@
 script = ExtResource("2_v6475")
 Operation = 0
 
+[node name="DEBUG_InfoLabel" parent="." index="6"]
+visible = false
+
 [node name="NameLabel" parent="." index="7"]
-offset_left = -48.0
-offset_right = -8.0
+offset_left = -24.0
+offset_right = 16.0

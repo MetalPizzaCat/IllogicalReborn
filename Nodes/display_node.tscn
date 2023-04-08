@@ -9,6 +9,7 @@ DisplayLabel = NodePath("Label")
 InputSize = 1
 
 [node name="ColorRect" type="ColorRect" parent="." index="4"]
+visible = false
 offset_left = -56.0
 offset_top = -56.0
 offset_right = 56.0
@@ -18,10 +19,19 @@ color = Color(0, 0, 0, 0.803922)
 
 [node name="Label" type="Label" parent="." index="5"]
 offset_left = -56.0
-offset_top = -56.0
+offset_top = -152.0
 offset_right = 56.0
-offset_bottom = 56.0
+offset_bottom = -22.0
 text = "BLESSED SIGMAR THE WORLD DROWNS IN CORRUPTION"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
+
+[node name="InputConnectors" parent="." index="6"]
+position = Vector2(-48, 0)
+
+[node name="DEBUG_InfoLabel" parent="." index="8"]
+visible = false
+
+[node name="NameLabel" parent="." index="9"]
+visible = false

@@ -17,11 +17,9 @@ public static class ExportImageGenerator
     {
         float minX = Math.Abs(Math.Min(nodes.MinBy(x => x.GlobalPosition.X)?.GlobalPosition.X ?? 0, 0)) + CanvasSafeZoneTop.X;
         float minY = Math.Abs(Math.Min(nodes.MinBy(x => x.GlobalPosition.Y)?.GlobalPosition.Y ?? 0, 0)) + CanvasSafeZoneTop.Y;
-        GD.Print($"MinX {minX} MinY {minY}");
         XElement root = new XElement("svg");
         root.SetAttributeValue("width", (nodes.MaxBy(x => x.GlobalPosition.X)?.GlobalPosition.X ?? 0) - (nodes.MinBy(x => x.GlobalPosition.X)?.GlobalPosition.X ?? 0) + CanvasSafeZoneBottom.X);
         root.SetAttributeValue("height", (nodes.MaxBy(x => x.GlobalPosition.Y)?.GlobalPosition.Y ?? 0) - (nodes.MinBy(x => x.GlobalPosition.Y)?.GlobalPosition.Y ?? 0) + CanvasSafeZoneBottom.Y);
-        GD.Print($"MaxX: {(nodes.MaxBy(x => x.GlobalPosition.X)?.GlobalPosition.X ?? 0)} MaxY: {(nodes.MaxBy(x => x.GlobalPosition.Y)?.GlobalPosition.Y ?? 0)}; MinX: {(nodes.MinBy(x => x.GlobalPosition.X)?.GlobalPosition.X ?? 0)} MinY: {(nodes.MinBy(x => x.GlobalPosition.Y)?.GlobalPosition.Y ?? 0)}");
         foreach (LogicNode node in nodes)
         {
             XElement rect = new XElement("rect");
@@ -59,6 +57,13 @@ public static class ExportImageGenerator
             rect.SetAttributeValue("x", node.GlobalPosition.X + minX - BlockSize.X / 2f);
             rect.SetAttributeValue("y", node.GlobalPosition.Y + minY - BlockSize.Y / 2f);
             root.Add(rect);
+
+            XElement text = new XElement("text", node.Symbol);
+            text.SetAttributeValue("x", node.GlobalPosition.X + minX - BlockSize.X / 4f);
+            text.SetAttributeValue("y", node.GlobalPosition.Y + minY);
+            text.SetAttributeValue("font-size", "3em");
+            text.SetAttributeValue("class", "name");
+            root.Add(text);
         }
         foreach (ConnectionWire wire in wires)
         {

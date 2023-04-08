@@ -25,6 +25,8 @@ public partial class ConstNode : LogicNode
 
 	public override string Formula => _value ? "1" : "0";
 
+	public override string Symbol => _value ? "LOG1" : "LOG0";
+
 	public override string DisplayName => $"Constant value";
 
 	public override LogicNodeSaveData SaveData

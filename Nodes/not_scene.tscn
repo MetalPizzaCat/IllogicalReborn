@@ -7,3 +7,11 @@
 script = ExtResource("2_svtjs")
 Operation = 2
 InputSize = 1
+
+[node name="InputConnectors" parent="." index="4"]
+position = Vector2(-48, 0)
+
+[node name="NameLabel" parent="." index="7"]
+offset_left = -16.0
+offset_right = 24.0
+text = "1"

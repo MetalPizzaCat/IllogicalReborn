@@ -1,9 +1,21 @@
-[gd_scene load_steps=3 format=3 uid="uid://c6ygkydyym4ul"]
+[gd_scene load_steps=4 format=3 uid="uid://c6ygkydyym4ul"]
 
 [ext_resource type="PackedScene" uid="uid://cxn1fucweqvo2" path="res://Nodes/LogicNode.tscn" id="1_tdj17"]
 [ext_resource type="Script" path="res://Script/Nodes/ConstNode.cs" id="2_av23p"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_0fbc8"]
+font_size = 20
+font_color = Color(0, 0, 0, 1)
 
 [node name="ConstNode" instance=ExtResource("1_tdj17")]
 script = ExtResource("2_av23p")
 Value = false
 InputSize = 0
+
+[node name="NameLabel" parent="." index="7"]
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 34.0
+offset_bottom = 40.0
+text = "LOG0"
+label_settings = SubResource("LabelSettings_0fbc8")

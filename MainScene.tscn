@@ -25,12 +25,14 @@ SelectionBox = NodePath("Camera2D/SelectionRect")
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="DEBUG_OffsetLabel" type="Label" parent="Camera2D"]
+visible = false
 offset_left = -16.0
 offset_top = -56.0
 offset_right = 280.0
 offset_bottom = -8.0
 
 [node name="Offsethelper2" type="Sprite2D" parent="Camera2D"]
+visible = false
 modulate = Color(0.105882, 1, 0.25098, 1)
 position = Vector2(0, 248)
 texture = ExtResource("6_p2ilx")
@@ -52,6 +54,7 @@ color = Color(0, 1, 0.686275, 0.34902)
 [node name="ConnectionLinePreview" parent="." instance=ExtResource("8_7rmf6")]
 
 [node name="Offsethelper" type="Sprite2D" parent="."]
+visible = false
 modulate = Color(0.552941, 0.494118, 1, 1)
 position = Vector2(0, 248)
 texture = ExtResource("6_p2ilx")

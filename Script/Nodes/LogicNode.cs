@@ -85,6 +85,8 @@ public partial class LogicNode : Node2D
 	/// </summary>
 	public virtual string Formula => "Invalid!";
 
+	public virtual string Symbol => "1";
+
 	public List<LogicNode> InputNodes
 	{
 		get
@@ -146,6 +148,10 @@ public partial class LogicNode : Node2D
 			con.OnConnectionSizeUpdated += (Connector source, Connector destination, bool compatible) => OnConnectionSizeUpdated?.Invoke(source, destination, compatible);
 			con.ParentNode = this;
 			con.Id = i;
+		}
+		if (NameLabel != null)
+		{
+			NameLabel.Text = Symbol;
 		}
 	}
 
