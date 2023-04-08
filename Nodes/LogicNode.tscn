@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Script/Nodes/LogicNode.cs" id="1_e2fq6"]
 [ext_resource type="PackedScene" uid="uid://bs6buorisdaki" path="res://connector.tscn" id="2_smbb3"]
-[ext_resource type="Texture2D" uid="uid://wurfl4d5gx1b" path="res://icon.svg" id="3_etb5j"]
+[ext_resource type="Texture2D" uid="uid://ctkmv44qdg3m" path="res://assets/logic_component_base.svg" id="3_stmui"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_8kesq"]
 font_size = 50
@@ -34,25 +34,27 @@ item_3/checkable = 2
 item_3/id = 2
 
 [node name="Button" type="Button" parent="."]
-offset_left = -64.0
-offset_top = -64.0
-offset_right = 64.0
-offset_bottom = 64.0
+offset_left = -48.0
+offset_top = -72.0
+offset_right = 48.0
+offset_bottom = 72.0
+flat = true
 
 [node name="SelectionPreivew" type="Sprite2D" parent="."]
 visible = false
 modulate = Color(0.0352941, 1, 0.729412, 0.384314)
 scale = Vector2(1.375, 1.375)
-texture = ExtResource("3_etb5j")
+texture = ExtResource("3_stmui")
 
 [node name="Body" type="Sprite2D" parent="."]
-texture = ExtResource("3_etb5j")
+texture_filter = 1
+texture = ExtResource("3_stmui")
 
 [node name="InputConnectors" type="Node2D" parent="."]
-position = Vector2(-88, -40)
+position = Vector2(-48, -40)
 
 [node name="OutputConnectors" type="Node2D" parent="."]
-position = Vector2(88, -40)
+position = Vector2(48, -40)
 
 [node name="DEBUG_InfoLabel" type="Label" parent="."]
 offset_left = -64.0
@@ -61,6 +63,7 @@ offset_right = 56.0
 offset_bottom = -64.0
 
 [node name="NameLabel" type="Label" parent="."]
+visible = false
 offset_left = -24.0
 offset_top = -32.0
 offset_right = 16.0

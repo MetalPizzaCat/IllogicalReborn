@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bs6buorisdaki"]
 
 [ext_resource type="Script" path="res://Script/Connector.cs" id="1_gg0yq"]
-[ext_resource type="Texture2D" uid="uid://wurfl4d5gx1b" path="res://icon.svg" id="1_t8eek"]
+[ext_resource type="Texture2D" uid="uid://b4infjxtt4cck" path="res://assets/line.svg" id="2_yaocv"]
 
 [node name="Connector" type="Node2D" node_paths=PackedStringArray("DataSizeLabel", "DebugInfoLabel")]
 script = ExtResource("1_gg0yq")
@@ -13,11 +13,11 @@ offset_left = -24.0
 offset_top = -24.0
 offset_right = 24.0
 offset_bottom = 24.0
+flat = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(-3.8147e-06, 3.8147e-06)
-scale = Vector2(0.3125, 0.3125)
-texture = ExtResource("1_t8eek")
+texture_filter = 1
+texture = ExtResource("2_yaocv")
 
 [node name="DataSizeLabel" type="Label" parent="."]
 visible = false
