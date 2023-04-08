@@ -605,7 +605,7 @@ public partial class MainScene : Node
         {
             ContextMenu.CurrentNode = null;
         }
-        if(_currentlySelectedConnector != null && _currentlySelectedConnector.ParentNode == node)
+        if (_currentlySelectedConnector != null && _currentlySelectedConnector.ParentNode == node)
         {
             CancelConnection();
         }
@@ -708,4 +708,11 @@ public partial class MainScene : Node
         }
         Simulate();
     }
+
+    private void ExportFile(string path)
+    {
+        string svg = ExportImageGenerator.GetXml(LogicComponents, Wires) ?? throw new NullReferenceException("Failed to generate SVG output");
+        File.WriteAllText(path, svg);
+    }
+
 }

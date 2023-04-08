@@ -11,7 +11,8 @@ public partial class WindowMenu : MenuBar
     {
         New = 0,
         Save = 1,
-        Load = 3, 
+        Export = 2,
+        Load = 3,
         Exit = 4
     }
 
@@ -23,6 +24,10 @@ public partial class WindowMenu : MenuBar
 
     [Export]
     public FileDialog? OpenFileDialog { get; set; }
+
+    [Export]
+    public FileDialog? ExportFileDialog { get; set; }
+    
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -47,6 +52,9 @@ public partial class WindowMenu : MenuBar
                 break;
             case FileMenuOptions.Load:
                 OpenFileDialog?.Show();
+                break;
+            case FileMenuOptions.Export:
+                ExportFileDialog?.Show();
                 break;
         }
     }

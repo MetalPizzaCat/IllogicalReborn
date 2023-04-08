@@ -94,7 +94,7 @@ mouse_filter = 2
 color = Color(0, 0, 0, 0.384314)
 
 [node name="ColorRect3" type="ColorRect" parent="CanvasLayer"]
-anchors_preset = -1
+anchors_preset = 11
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -136,13 +136,14 @@ visible = false
 offset_left = 8.0
 offset_right = 8.0
 
-[node name="MenuBar" type="MenuBar" parent="CanvasLayer" node_paths=PackedStringArray("NodeScene", "SaveFileDialog", "OpenFileDialog")]
+[node name="MenuBar" type="MenuBar" parent="CanvasLayer" node_paths=PackedStringArray("NodeScene", "SaveFileDialog", "OpenFileDialog", "ExportFileDialog")]
 offset_right = 1152.0
 offset_bottom = 40.0
 script = ExtResource("2_36w7i")
 NodeScene = NodePath("../../MainScene")
 SaveFileDialog = NodePath("../../SaveFileDialog")
 OpenFileDialog = NodePath("../../LoadFileDialog")
+ExportFileDialog = NodePath("../../ExportFileDialog")
 
 [node name="FileMenu" type="PopupMenu" parent="CanvasLayer/MenuBar"]
 item_count = 5
@@ -150,20 +151,22 @@ item_0/text = "New"
 item_0/id = 0
 item_1/text = "Save"
 item_1/id = 1
-item_2/text = ""
-item_2/id = 3
-item_2/separator = true
+item_2/text = "Export As SVG"
+item_2/id = 2
 item_3/text = "Load"
-item_3/id = 4
+item_3/id = 3
 item_4/text = "Exit"
-item_4/id = 2
-
-[node name="AboutMenu" type="PopupMenu" parent="CanvasLayer/MenuBar"]
+item_4/id = 4
 
 [node name="SaveFileDialog" type="FileDialog" parent="."]
 size = Vector2i(632, 500)
 access = 2
 filters = PackedStringArray("*.boo")
+
+[node name="ExportFileDialog" type="FileDialog" parent="."]
+size = Vector2i(632, 500)
+access = 2
+filters = PackedStringArray("*.svg")
 
 [node name="LoadFileDialog" type="FileDialog" parent="."]
 title = "Open a File"
@@ -183,4 +186,5 @@ filters = PackedStringArray("*.boo")
 [connection signal="pressed" from="CanvasLayer/ColorRect/VBoxContainer/AddOutput" to="MainScene" method="AddOutputNode"]
 [connection signal="index_pressed" from="CanvasLayer/MenuBar/FileMenu" to="CanvasLayer/MenuBar" method="FileMenuPressed"]
 [connection signal="file_selected" from="SaveFileDialog" to="CanvasLayer/MenuBar" method="FileToSaveSelected"]
+[connection signal="file_selected" from="ExportFileDialog" to="MainScene" method="ExportFile"]
 [connection signal="file_selected" from="LoadFileDialog" to="MainScene" method="LoadFromFile"]
