@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://dcq8kej6a3fjm"]
+[gd_scene load_steps=10 format=3 uid="uid://dcq8kej6a3fjm"]
 
 [ext_resource type="PackedScene" uid="uid://6w3butyni4vy" path="res://MainScene.tscn" id="1_62umj"]
+[ext_resource type="Theme" uid="uid://caxkrnd8nk2tw" path="res://assets/BoringWindowsStyle.tres" id="1_ip84b"]
 [ext_resource type="Script" path="res://Script/MainControl.cs" id="1_o6up7"]
 [ext_resource type="Script" path="res://Script/WindowMenu.cs" id="2_36w7i"]
 [ext_resource type="PackedScene" uid="uid://c6ygkydyym4ul" path="res://Nodes/const_node.tscn" id="2_ik7h8"]
@@ -16,6 +17,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_ip84b")
 script = ExtResource("1_o6up7")
 VariableButtonList = NodePath("CanvasLayer/ColorRect3/ScrollContainer/VBoxContainer")
 VariableButtonPrefab = ExtResource("5_du51w")
@@ -39,49 +41,57 @@ anchor_left = -0.007
 anchor_bottom = 1.0
 offset_left = 8.064
 offset_top = 32.0
-offset_right = 128.0
+offset_right = 255.0
 mouse_filter = 2
-color = Color(0, 0, 0, 0.384314)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/ColorRect"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 0.79
-offset_bottom = -0.400024
+offset_right = -1.0
+offset_bottom = -0.640015
 
 [node name="AddAnd" type="Button" parent="CanvasLayer/ColorRect/VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("1_ip84b")
 text = "And"
 
 [node name="AddOr" type="Button" parent="CanvasLayer/ColorRect/VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("1_ip84b")
 text = "Or"
 
 [node name="AddXor" type="Button" parent="CanvasLayer/ColorRect/VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("1_ip84b")
 text = "Xor"
 
 [node name="AddNot" type="Button" parent="CanvasLayer/ColorRect/VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("1_ip84b")
 text = "Not"
 
 [node name="AddConst" type="Button" parent="CanvasLayer/ColorRect/VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("1_ip84b")
 text = "Constant"
 
 [node name="AddDisplay" type="Button" parent="CanvasLayer/ColorRect/VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("1_ip84b")
 text = "Display"
 
 [node name="AddInput" type="Button" parent="CanvasLayer/ColorRect/VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("1_ip84b")
 text = "Variable
 "
 
 [node name="AddOutput" type="Button" parent="CanvasLayer/ColorRect/VBoxContainer"]
 visible = false
 layout_mode = 2
+theme = ExtResource("1_ip84b")
 text = "Output"
 
 [node name="ColorRect2" type="ColorRect" parent="CanvasLayer"]
@@ -91,7 +101,6 @@ anchor_right = 1.0
 offset_left = -16.128
 offset_bottom = 32.0
 mouse_filter = 2
-color = Color(0, 0, 0, 0.384314)
 
 [node name="ColorRect3" type="ColorRect" parent="CanvasLayer"]
 anchors_preset = 11
@@ -101,7 +110,6 @@ anchor_bottom = 1.0
 offset_left = -128.0
 offset_top = 32.0
 mouse_filter = 2
-color = Color(0, 0, 0, 0.384314)
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/ColorRect3"]
 layout_mode = 2
@@ -113,10 +121,12 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="CanvasLayer/ColorRect3/VBoxContainer2/HBoxContainer"]
 layout_mode = 2
+theme = ExtResource("1_ip84b")
 text = "Name"
 
 [node name="Label2" type="Label" parent="CanvasLayer/ColorRect3/VBoxContainer2/HBoxContainer"]
 layout_mode = 2
+theme = ExtResource("1_ip84b")
 text = "Value"
 horizontal_alignment = 2
 
@@ -135,10 +145,12 @@ layout_mode = 2
 visible = false
 offset_left = 8.0
 offset_right = 8.0
+theme = ExtResource("1_ip84b")
 
 [node name="MenuBar" type="MenuBar" parent="CanvasLayer" node_paths=PackedStringArray("NodeScene", "SaveFileDialog", "OpenFileDialog", "ExportFileDialog")]
 offset_right = 1152.0
-offset_bottom = 40.0
+offset_bottom = 32.0
+theme = ExtResource("1_ip84b")
 script = ExtResource("2_36w7i")
 NodeScene = NodePath("../../MainScene")
 SaveFileDialog = NodePath("../../SaveFileDialog")
