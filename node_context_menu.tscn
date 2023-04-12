@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bsvm534jowf24"]
+[gd_scene load_steps=3 format=3 uid="uid://bsvm534jowf24"]
 
 [ext_resource type="Script" path="res://Script/NodeContextMenu.cs" id="1_s1lho"]
+[ext_resource type="Theme" uid="uid://caxkrnd8nk2tw" path="res://assets/BoringWindowsStyle.tres" id="2_psqd0"]
 
 [node name="NodeContextMenu" type="Control" node_paths=PackedStringArray("DisplayNameLabel", "FormulaLabel", "VariableNameOptionButton", "VariableNameControlNode")]
 layout_mode = 3
@@ -12,7 +13,7 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_s1lho")
 DisplayNameLabel = NodePath("VBoxContainer/DisplayNameLabel")
-FormulaLabel = NodePath("VBoxContainer/HBoxContainer2/FormulaLabel")
+FormulaLabel = NodePath("VBoxContainer/HBoxContainer2/ScrollContainer/FormulaLabel")
 VariableNameOptionButton = NodePath("VBoxContainer/HBoxContainer3/VariableNameOptionButton")
 VariableNameControlNode = NodePath("VBoxContainer/HBoxContainer3")
 
@@ -21,42 +22,57 @@ layout_mode = 0
 offset_top = 448.0
 offset_right = 192.0
 offset_bottom = 648.0
+theme = ExtResource("2_psqd0")
 
 [node name="DisplayNameLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("2_psqd0")
 text = "BLESSED SIGMAR THE WORLD DROWS IN CORRUPTION"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("2_psqd0")
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2"]
 layout_mode = 2
+theme = ExtResource("2_psqd0")
 text = "Formula: "
 
-[node name="FormulaLabel" type="Label" parent="VBoxContainer/HBoxContainer2"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
+
+[node name="FormulaLabel" type="Label" parent="VBoxContainer/HBoxContainer2/ScrollContainer"]
+layout_mode = 2
+theme = ExtResource("2_psqd0")
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
 visible = false
 layout_mode = 2
+theme = ExtResource("2_psqd0")
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3"]
 layout_mode = 2
+theme = ExtResource("2_psqd0")
 text = "Variable name: "
 
 [node name="VariableNameOptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer3"]
 layout_mode = 2
+theme = ExtResource("2_psqd0")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 visible = false
 layout_mode = 2
+theme = ExtResource("2_psqd0")
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
+theme = ExtResource("2_psqd0")
 text = "Data size: "
 
 [node name="OptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
+theme = ExtResource("2_psqd0")
 
 [connection signal="item_selected" from="VBoxContainer/HBoxContainer3/VariableNameOptionButton" to="." method="VariableNameSelected"]
 [connection signal="item_selected" from="VBoxContainer/HBoxContainer/OptionButton" to="." method="SelectDataSize"]

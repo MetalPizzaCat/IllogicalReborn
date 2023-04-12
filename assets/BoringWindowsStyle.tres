@@ -1,0 +1,39 @@
+[gd_resource type="Theme" load_steps=8 format=3 uid="uid://caxkrnd8nk2tw"]
+
+[sub_resource type="SystemFont" id="SystemFont_5vu5a"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rjk1b"]
+bg_color = Color(0, 0.45098, 0.807843, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_veiuq"]
+bg_color = Color(0.8, 0.8, 0.8, 1)
+shadow_size = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b5iyj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xw11m"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s1vsu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2posb"]
+bg_color = Color(0, 0.45098, 0.807843, 1)
+
+[resource]
+Button/colors/font_color = Color(0, 0, 0, 1)
+Button/colors/font_focus_color = Color(0, 0, 0, 1)
+Button/colors/font_hover_color = Color(0, 0, 0, 1)
+Button/colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(0, 0, 0, 1)
+Button/fonts/font = SubResource("SystemFont_5vu5a")
+Button/styles/hover = SubResource("StyleBoxFlat_rjk1b")
+Button/styles/normal = SubResource("StyleBoxFlat_veiuq")
+Button/styles/pressed = SubResource("StyleBoxFlat_b5iyj")
+Label/colors/font_color = Color(0, 0, 0, 1)
+MenuButton/colors/font_color = Color(0, 0, 0, 1)
+MenuButton/colors/font_focus_color = Color(0, 0, 0, 1)
+MenuButton/colors/font_hover_color = Color(0, 0, 0, 1)
+MenuButton/colors/font_outline_color = Color(0, 0, 0, 1)
+MenuButton/colors/font_pressed_color = Color(0, 0, 0, 1)
+MenuButton/styles/hover = SubResource("StyleBoxFlat_xw11m")
+MenuButton/styles/normal = SubResource("StyleBoxFlat_s1vsu")
+MenuButton/styles/pressed = SubResource("StyleBoxFlat_2posb")
