@@ -1,12 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://bqs076b4kpaja"]
+[gd_scene load_steps=4 format=3 uid="uid://bqs076b4kpaja"]
 
 [ext_resource type="PackedScene" uid="uid://cxn1fucweqvo2" path="res://Nodes/LogicNode.tscn" id="1_d7e0c"]
 [ext_resource type="Script" path="res://Script/Nodes/OperationNode.cs" id="2_svtjs"]
+[ext_resource type="Texture2D" uid="uid://ctyu2fb26jpau" path="res://assets/logic_component_inverted_output.svg" id="3_wd074"]
 
 [node name="NotNode" instance=ExtResource("1_d7e0c")]
 script = ExtResource("2_svtjs")
 Operation = 2
 InputSize = 1
+
+[node name="Body" parent="." index="3"]
+texture = ExtResource("3_wd074")
 
 [node name="InputConnectors" parent="." index="4"]
 position = Vector2(-48, 0)

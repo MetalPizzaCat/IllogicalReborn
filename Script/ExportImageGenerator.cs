@@ -58,6 +58,18 @@ public static class ExportImageGenerator
             rect.SetAttributeValue("y", node.GlobalPosition.Y + minY - BlockSize.Y / 2f);
             root.Add(rect);
 
+            if (node is OperationNode operation && operation.Operation == OperationNode.OperationType.Not)
+            {
+                XElement circle = new XElement("circle");
+                circle.SetAttributeValue("cx", node.GlobalPosition.X + minX + BlockSize.X / 2f);
+                circle.SetAttributeValue("cy", node.GlobalPosition.Y + minY);
+                circle.SetAttributeValue("r", 8);
+                circle.SetAttributeValue("fill", "white");
+                circle.SetAttributeValue("stroke-width", 4);
+                circle.SetAttributeValue("stroke", "black");
+                root.Add(circle);
+            }
+
             XElement text = new XElement("text", node.Symbol);
             text.SetAttributeValue("x", node.GlobalPosition.X + minX - BlockSize.X / 4f);
             text.SetAttributeValue("y", node.GlobalPosition.Y + minY);
