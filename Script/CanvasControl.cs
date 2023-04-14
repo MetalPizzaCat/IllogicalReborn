@@ -15,15 +15,24 @@ public partial class CanvasControl : Control
     public event EndSelectionEventHandler? OnSelectionEnded;
     public Vector2 MousePosition { get; set; } = Vector2.Zero;
 
+    [Export]
+    public Label? DebugInfoLabel { get; set; } = null;
+
+    private Vector2 _defaultViewportSize = new Vector2(ProjectSettings.GetSetting("display/window/size/viewport_width").AsSingle(), ProjectSettings.GetSetting("display/window/size/viewport_height").AsSingle());
+
     public override void _Input(InputEvent @event)
     {
         base._Input(@event);
         if (@event is InputEventMouseMotion mouseMotion)
         {
-            MousePosition = mouseMotion.Position - Size / 2f;
+            MousePosition = (mouseMotion.Position - (GetViewportRect().Size - _defaultViewportSize) / 2f - Size / 2f);
+            if (DebugInfoLabel != null)
+            {
+                DebugInfoLabel.Text = $"MousePos: {mouseMotion.Position}, scale: {GetViewportRect().Size - _defaultViewportSize}";
+            }
         }
-
     }
+
 
     public override void _GuiInput(InputEvent @event)
     {

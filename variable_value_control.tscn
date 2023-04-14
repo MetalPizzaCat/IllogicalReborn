@@ -1,8 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://d3p1pfh2on7pl"]
+[gd_scene load_steps=3 format=3 uid="uid://d3p1pfh2on7pl"]
 
+[ext_resource type="Theme" uid="uid://caxkrnd8nk2tw" path="res://assets/BoringWindowsStyle.tres" id="1_djrfy"]
 [ext_resource type="Script" path="res://Script/VariableValueControl.cs" id="1_pex52"]
 
 [node name="VariableValueControl" type="HBoxContainer" node_paths=PackedStringArray("VariableNameLabel", "VariableValueBox")]
+theme = ExtResource("1_djrfy")
 alignment = 1
 script = ExtResource("1_pex52")
 VariableNameLabel = NodePath("VariableNameLabel")
@@ -10,7 +12,9 @@ VariableValueBox = NodePath("VariableValueBox")
 
 [node name="VariableNameLabel" type="Label" parent="."]
 layout_mode = 2
+theme = ExtResource("1_djrfy")
 text = "X"
 
 [node name="VariableValueBox" type="CheckBox" parent="."]
 layout_mode = 2
+theme = ExtResource("1_djrfy")

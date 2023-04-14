@@ -30,8 +30,5 @@ autowrap_mode = 2
 [node name="InputConnectors" parent="." index="6"]
 position = Vector2(-48, 0)
 
-[node name="DEBUG_InfoLabel" parent="." index="8"]
-visible = false
-
 [node name="NameLabel" parent="." index="9"]
 visible = false

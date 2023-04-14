@@ -37,7 +37,7 @@ modulate = Color(0.105882, 1, 0.25098, 1)
 position = Vector2(0, 248)
 texture = ExtResource("6_p2ilx")
 
-[node name="CanvasControl" type="Control" parent="Camera2D"]
+[node name="CanvasControl" type="Control" parent="Camera2D" node_paths=PackedStringArray("DebugInfoLabel")]
 layout_mode = 3
 anchors_preset = 0
 offset_left = -568.0
@@ -45,6 +45,16 @@ offset_top = -320.0
 offset_right = 576.0
 offset_bottom = 320.0
 script = ExtResource("7_hi55h")
+DebugInfoLabel = NodePath("Label")
+
+[node name="Label" type="Label" parent="Camera2D/CanvasControl"]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 472.0
+offset_top = 600.0
+offset_right = 719.0
+offset_bottom = 626.0
+text = "DDDDDDDDDDDDDDDDDDDDD"
 
 [node name="SelectionRect" type="ColorRect" parent="Camera2D"]
 color = Color(0, 1, 0.686275, 0.34902)
